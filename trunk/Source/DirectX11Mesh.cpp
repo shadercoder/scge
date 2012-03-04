@@ -18,43 +18,20 @@ inline bool read(std::ifstream &file, T &result)
 	return file.fail();
 }
 
-template <>
-inline bool read(std::ifstream &file, Vector3 &result)
+inline bool read(std::ifstream &file, std::string &result)
 {
-	file.read((char *)&result, sizeof(float)*3);
+	uint32 materialNameLength = 0;
+	if(read(file, materialNameLength)) return true;
+
+	result.resize(materialNameLength);
+
+	file.read(&result[0], sizeof(std::string::value_type)*materialNameLength);
 	return file.fail();
-}
-
-template <>
-inline bool read(std::ifstream &file, Vector2 &result)
-{
-	file.read((char *)&result, sizeof(float)*2);
-	return file.fail();
-}
-
-template <>
-inline bool read(std::ifstream &file, DirectX11Mesh::VertexType &result)
-{
-	if(read(file, result.position)) return true;
-	if(read(file, result.texture)) return true;
-	if(read(file, result.normal)) return true;
-	if(read(file, result.binormal)) return true;
-	if(read(file, result.tangent)) return true;
-
-	return false;
 }
 
 bool DirectX11Mesh::Load(std::ifstream &file)
 {
-	uint32 materialNameLength = 0;
-	if(read(file, materialNameLength)) return true;
-	mMaterialName.resize(materialNameLength);
-
-	for(size_t curChar = 0; curChar < mMaterialName.length(); ++curChar)
-	{
-		if(read(file, mMaterialName[curChar]))
-			return true;
-	}
+	if(read(file, mMaterialName)) return true;
 
 	uint32 vertexCount = 0;
 	if(read(file, vertexCount)) return true;
@@ -83,8 +60,7 @@ bool DirectX11Mesh::Finalise()
 {
 	mMaterial = mResourceManager.getResourceReference<MaterialResource>(mMaterialName);
 
-	if(!mMaterial)
-		return true;
+	if(!mMaterial) return true;
 	mMaterialName.clear();
 
 	return false;
@@ -92,12 +68,10 @@ bool DirectX11Mesh::Finalise()
 
 bool DirectX11Mesh::finaliseLoad()
 {
-	if(mVertexBuffer.Initialise(mD3D11Device, mVertices.size(), D3D11_BIND_VERTEX_BUFFER, false, mVertices.data()))
-		return true;
+	if(mVertexBuffer.Initialise(mD3D11Device, mVertices.size(), D3D11_BIND_VERTEX_BUFFER, false, mVertices.data())) return true;
 	mVertices.clear();
 
-	if(mIndexBuffer.Initialise(mD3D11Device, mIndices.size(), D3D11_BIND_INDEX_BUFFER, false, mIndices.data()))
-		return true;
+	if(mIndexBuffer.Initialise(mD3D11Device, mIndices.size(), D3D11_BIND_INDEX_BUFFER, false, mIndices.data())) return true;
 	mIndices.clear();
 
 	return false;

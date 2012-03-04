@@ -37,8 +37,8 @@ public:
 	struct VertexType
 	{
 		Vector3 position;
-		Vector3 normal;
 		Vector2 texture;
+		Vector3 normal;
 		Vector3 binormal;
 		Vector3 tangent;
 	};

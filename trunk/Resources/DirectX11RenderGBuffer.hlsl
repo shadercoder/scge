@@ -28,10 +28,10 @@ SamplerState gSampler  : register( s0 );
 struct VS_INPUT
 {
 	float3 mPosition : POSITION;
-	float3 mNormal   : NORMAL0;
-	float2 mTexCoord : TEXCOORD0;
-	float3 mBinormal : BINORMAL0;
-	float3 mTangent  : TANGENT0;
+	float2 mTexCoord : TEXCOORD;
+	float3 mNormal   : NORMAL;
+	float3 mBinormal : BINORMAL;
+	float3 mTangent  : TANGENT;
 };
 
 struct VS_OUTPUT
