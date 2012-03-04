@@ -1,0 +1,367 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="..\..\Include\scge\Config.h" />
+    <ClInclude Include="..\..\Include\scge\AudioDevice.h">
+      <Filter>AudioDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Math\BoundingBox.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Math\BoundingSphere.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Math\Camera.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Console.h">
+      <Filter>Console</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Console\ConsoleAlias.h">
+      <Filter>Console</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Console\ConsoleCommand.h">
+      <Filter>Console</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Console\ConsoleEvent.h">
+      <Filter>Console</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Console\ConsoleFunction.h">
+      <Filter>Console</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Console\ConsoleVariable.h">
+      <Filter>Console</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Math\EulerAngles.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\FileSystem\FileResource.h">
+      <Filter>FileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\FileSystem.h">
+      <Filter>FileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Math\Frustum.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\GraphicsDevice.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\InputDevice\KeyBinding.h">
+      <Filter>InputDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\InputDevice.h">
+      <Filter>InputDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Math.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Math\Matrix3.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Math\Matrix4.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Math\Plane.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Math\Quaternion.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Math\Ray.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Graphics\Renderer.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Graphics\Renderer2D.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Graphics\Renderer3D.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\ResourceManager\Resource.h">
+      <Filter>ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\ResourceManager\ResourceFactory.h">
+      <Filter>ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\ResourceManager.h">
+      <Filter>ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\ResourceManager\ResourceReference.h">
+      <Filter>ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Timer.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Window\WindowHandle.h">
+      <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Window.h">
+      <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Math\Vector4.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Math\Vector2.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Math\Vector3.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\AudioDevice\SoundResource.h">
+      <Filter>AudioDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Utility\StringUtility.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11BufferHelper.h">
+      <Filter>Graphics\DirectX11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11ComPtr.h">
+      <Filter>Graphics\DirectX11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11Depth2DHelper.h">
+      <Filter>Graphics\DirectX11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11Renderer.h">
+      <Filter>Graphics\DirectX11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11Renderer2D.h">
+      <Filter>Graphics\DirectX11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11Renderer3D.h">
+      <Filter>Graphics\DirectX11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11Texture2DHelper.h">
+      <Filter>Graphics\DirectX11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Graphics\Base\TextureResource.h">
+      <Filter>Graphics\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Graphics\Base\ModelResource.h">
+      <Filter>Graphics\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Graphics\Base\MeshResource.h">
+      <Filter>Graphics\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Graphics\Resources\MaterialResource.h">
+      <Filter>Graphics\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11PixelShader.h">
+      <Filter>Graphics\DirectX11\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11ComputeShader.h">
+      <Filter>Graphics\DirectX11\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11VertexShader.h">
+      <Filter>Graphics\DirectX11\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11Texture.h">
+      <Filter>Graphics\DirectX11\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11Font.h">
+      <Filter>Graphics\DirectX11\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11Mesh.h">
+      <Filter>Graphics\DirectX11\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11Model.h">
+      <Filter>Graphics\DirectX11\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Utility.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\ThreadPool.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Resources\DirectX11SharedDefines.h">
+      <Filter>Graphics\DirectX11\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\scge\Assert.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="AudioDevice">
+      <UniqueIdentifier>{0e7598e8-cbdd-4558-a451-ae9cb3d49ce9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Console">
+      <UniqueIdentifier>{1992d6bb-ffad-4245-bf78-9f7c0652cfc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FileSystem">
+      <UniqueIdentifier>{94a3c818-2838-47b3-aae5-5edb34effba0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{6f9ec157-30e2-4c59-90ba-a9c982312da0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="InputDevice">
+      <UniqueIdentifier>{7021820d-6e3f-46d5-b82b-c8cd7f4bbba5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{04d9e8d8-2fba-4007-b034-74eef0c7a0bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResourceManager">
+      <UniqueIdentifier>{90ecc694-7fba-4c9d-b4a4-41bf9be0eaff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{c3cb0401-bc56-4267-b3fd-7a46aa7a2d5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Window">
+      <UniqueIdentifier>{89ea6df1-a46d-4a02-a0e9-ae0d1f8202da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{c6fa756a-7297-498c-8a92-fcb64a5dc46f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\DirectX11">
+      <UniqueIdentifier>{fc1fecef-3442-4dfc-8644-22578fa32c9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Resources">
+      <UniqueIdentifier>{1c491ed8-5324-4758-aa1f-12f340b4de9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\DirectX11\Resources">
+      <UniqueIdentifier>{e0b908e1-5087-4878-b654-cf21b929012f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\DirectX11\Shaders">
+      <UniqueIdentifier>{a8ea7b50-25d3-42ed-b50d-5af0b27cff8c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\AudioDevice.cpp">
+      <Filter>AudioDevice</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Camera.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\BoundingSphere.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\BoundingBox.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DirectX11ComputeShader.cpp">
+      <Filter>Graphics\DirectX11\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DirectX11Font.cpp">
+      <Filter>Graphics\DirectX11\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DirectX11Mesh.cpp">
+      <Filter>Graphics\DirectX11\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DirectX11Model.cpp">
+      <Filter>Graphics\DirectX11\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DirectX11PixelShader.cpp">
+      <Filter>Graphics\DirectX11\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DirectX11Texture.cpp">
+      <Filter>Graphics\DirectX11\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DirectX11VertexShader.cpp">
+      <Filter>Graphics\DirectX11\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DirectX11Texture2DHelper.cpp">
+      <Filter>Graphics\DirectX11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DirectX11Depth2DHelper.cpp">
+      <Filter>Graphics\DirectX11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DirectX11Renderer.cpp">
+      <Filter>Graphics\DirectX11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DirectX11Renderer2D.cpp">
+      <Filter>Graphics\DirectX11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DirectX11Renderer3D.cpp">
+      <Filter>Graphics\DirectX11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Matrix4.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Math.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Matrix3.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Timer.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Window.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FileSystem.cpp">
+      <Filter>FileSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ResourceManager.cpp">
+      <Filter>ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Vector.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Ray.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Quaternion.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Plane.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Frustum.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\EulerAngles.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\KeyBinding.cpp">
+      <Filter>InputDevice</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Console.cpp">
+      <Filter>Console</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ConsoleAlias.cpp">
+      <Filter>Console</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ConsoleCommand.cpp">
+      <Filter>Console</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ConsoleFunction.cpp">
+      <Filter>Console</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ConsoleEvent.cpp">
+      <Filter>Console</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StringUtility.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\InputDevice.cpp">
+      <Filter>InputDevice</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GraphicsDevice.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SoundResource.cpp">
+      <Filter>AudioDevice</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MaterialResource.cpp">
+      <Filter>Graphics\Resources</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\Resources\DirectX11ComputeLighting.hlsl">
+      <Filter>Graphics\DirectX11\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Resources\DirectX11FinalPass.hlsl">
+      <Filter>Graphics\DirectX11\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Resources\DirectX11RenderGBuffer.hlsl">
+      <Filter>Graphics\DirectX11\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Resources\DirectX11Rendering.hlsl">
+      <Filter>Graphics\DirectX11\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Resources\DirectX11Utility.hlsl">
+      <Filter>Graphics\DirectX11\Shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>
