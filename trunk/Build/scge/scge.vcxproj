@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Include\scge\Assert.h" />
+    <ClInclude Include="..\..\Include\scge\AudioDevice.h" />
+    <ClInclude Include="..\..\Include\scge\AudioDevice\SoundResource.h" />
+    <ClInclude Include="..\..\Include\scge\Config.h" />
+    <ClInclude Include="..\..\Include\scge\Console.h" />
+    <ClInclude Include="..\..\Include\scge\Console\ConsoleAlias.h" />
+    <ClInclude Include="..\..\Include\scge\Console\ConsoleCommand.h" />
+    <ClInclude Include="..\..\Include\scge\Console\ConsoleEvent.h" />
+    <ClInclude Include="..\..\Include\scge\Console\ConsoleFunction.h" />
+    <ClInclude Include="..\..\Include\scge\Console\ConsoleVariable.h" />
+    <ClInclude Include="..\..\Include\scge\FileSystem.h" />
+    <ClInclude Include="..\..\Include\scge\FileSystem\FileResource.h" />
+    <ClInclude Include="..\..\Include\scge\GraphicsDevice.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\Base\MeshResource.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\Base\ModelResource.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\Base\TextureResource.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11BufferHelper.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11ComPtr.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11ComputeShader.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11Depth2DHelper.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11Font.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11Mesh.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11Model.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11PixelShader.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11Renderer.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11Renderer2D.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11Renderer3D.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11Texture.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11Texture2DHelper.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11VertexShader.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\Renderer.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\Renderer2D.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\Renderer3D.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\Resources\MaterialResource.h" />
+    <ClInclude Include="..\..\Include\scge\InputDevice.h" />
+    <ClInclude Include="..\..\Include\scge\InputDevice\KeyBinding.h" />
+    <ClInclude Include="..\..\Include\scge\Math.h" />
+    <ClInclude Include="..\..\Include\scge\Math\BoundingBox.h" />
+    <ClInclude Include="..\..\Include\scge\Math\BoundingSphere.h" />
+    <ClInclude Include="..\..\Include\scge\Math\Camera.h" />
+    <ClInclude Include="..\..\Include\scge\Math\EulerAngles.h" />
+    <ClInclude Include="..\..\Include\scge\Math\Frustum.h" />
+    <ClInclude Include="..\..\Include\scge\Math\Matrix3.h" />
+    <ClInclude Include="..\..\Include\scge\Math\Matrix4.h" />
+    <ClInclude Include="..\..\Include\scge\Math\Plane.h" />
+    <ClInclude Include="..\..\Include\scge\Math\Quaternion.h" />
+    <ClInclude Include="..\..\Include\scge\Math\Ray.h" />
+    <ClInclude Include="..\..\Include\scge\Math\Vector2.h" />
+    <ClInclude Include="..\..\Include\scge\Math\Vector3.h" />
+    <ClInclude Include="..\..\Include\scge\Math\Vector4.h" />
+    <ClInclude Include="..\..\Include\scge\ResourceManager.h" />
+    <ClInclude Include="..\..\Include\scge\ResourceManager\Resource.h" />
+    <ClInclude Include="..\..\Include\scge\ResourceManager\ResourceFactory.h" />
+    <ClInclude Include="..\..\Include\scge\ResourceManager\ResourceReference.h" />
+    <ClInclude Include="..\..\Include\scge\ThreadPool.h" />
+    <ClInclude Include="..\..\Include\scge\Timer.h" />
+    <ClInclude Include="..\..\Include\scge\Utility.h" />
+    <ClInclude Include="..\..\Include\scge\Utility\StringUtility.h" />
+    <ClInclude Include="..\..\Include\scge\Window.h" />
+    <ClInclude Include="..\..\Include\scge\Window\WindowHandle.h" />
+    <ClInclude Include="..\..\Resources\DirectX11SharedDefines.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\AudioDevice.cpp" />
+    <ClCompile Include="..\..\Source\BoundingBox.cpp" />
+    <ClCompile Include="..\..\Source\BoundingSphere.cpp" />
+    <ClCompile Include="..\..\Source\Camera.cpp" />
+    <ClCompile Include="..\..\Source\Console.cpp" />
+    <ClCompile Include="..\..\Source\ConsoleAlias.cpp" />
+    <ClCompile Include="..\..\Source\ConsoleCommand.cpp" />
+    <ClCompile Include="..\..\Source\ConsoleEvent.cpp" />
+    <ClCompile Include="..\..\Source\ConsoleFunction.cpp" />
+    <ClCompile Include="..\..\Source\DirectX11ComputeShader.cpp" />
+    <ClCompile Include="..\..\Source\DirectX11Depth2DHelper.cpp" />
+    <ClCompile Include="..\..\Source\DirectX11Font.cpp" />
+    <ClCompile Include="..\..\Source\DirectX11Mesh.cpp" />
+    <ClCompile Include="..\..\Source\DirectX11Model.cpp" />
+    <ClCompile Include="..\..\Source\DirectX11PixelShader.cpp" />
+    <ClCompile Include="..\..\Source\DirectX11Renderer.cpp" />
+    <ClCompile Include="..\..\Source\DirectX11Renderer2D.cpp" />
+    <ClCompile Include="..\..\Source\DirectX11Renderer3D.cpp" />
+    <ClCompile Include="..\..\Source\DirectX11Texture.cpp" />
+    <ClCompile Include="..\..\Source\DirectX11Texture2DHelper.cpp" />
+    <ClCompile Include="..\..\Source\DirectX11VertexShader.cpp" />
+    <ClCompile Include="..\..\Source\EulerAngles.cpp" />
+    <ClCompile Include="..\..\Source\FileSystem.cpp" />
+    <ClCompile Include="..\..\Source\Frustum.cpp" />
+    <ClCompile Include="..\..\Source\GraphicsDevice.cpp" />
+    <ClCompile Include="..\..\Source\InputDevice.cpp" />
+    <ClCompile Include="..\..\Source\KeyBinding.cpp" />
+    <ClCompile Include="..\..\Source\MaterialResource.cpp" />
+    <ClCompile Include="..\..\Source\Math.cpp" />
+    <ClCompile Include="..\..\Source\Matrix3.cpp" />
+    <ClCompile Include="..\..\Source\Matrix4.cpp" />
+    <ClCompile Include="..\..\Source\Plane.cpp" />
+    <ClCompile Include="..\..\Source\Quaternion.cpp" />
+    <ClCompile Include="..\..\Source\Ray.cpp" />
+    <ClCompile Include="..\..\Source\ResourceManager.cpp" />
+    <ClCompile Include="..\..\Source\SoundResource.cpp" />
+    <ClCompile Include="..\..\Source\StringUtility.cpp" />
+    <ClCompile Include="..\..\Source\Timer.cpp" />
+    <ClCompile Include="..\..\Source\Vector.cpp" />
+    <ClCompile Include="..\..\Source\Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\Resources\DirectX11ComputeLighting.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CSMain</EntryPointName>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CSMain</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compute</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\..\Resources\DirectX11FinalPass.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\..\Resources\DirectX11RenderGBuffer.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\..\Resources\DirectX11Rendering.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\..\Resources\DirectX11Utility.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCTargetsPath Condition="'$(VCTargetsPath11)' != '' and '$(VSVersion)' == '' and '$(VisualStudioVersion)' == ''">$(VCTargetsPath11)</VCTargetsPath>
+  </PropertyGroup>
+  <PropertyGroup Label="Globals">
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>scge</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(SolutionDir)\..\Include;$(BOOST_ROOT);$(BOOST_THREADPOOL_ROOT);$(DIRECTX_ROOT)\include;$(FMOD_ROOT)\inc;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(SolutionDir)\..\Include;$(BOOST_ROOT);$(BOOST_THREADPOOL_ROOT);$(DIRECTX_ROOT)\include;$(FMOD_ROOT)\inc;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
