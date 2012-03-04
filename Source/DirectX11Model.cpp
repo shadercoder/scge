@@ -19,11 +19,10 @@ std::shared_ptr<Resource> DirectX11ModelData::createResource() const
 }
 
 template <typename T>
-inline T read(std::ifstream &file)
+inline bool read(std::ifstream &file, T &result)
 {
-	T retType;
-	file.read((char *)&retType, sizeof(T));
-	return retType;
+	file.read((char *)&result, sizeof(T));
+	return file.fail();
 }
 
 bool DirectX11Model::Load()
@@ -35,13 +34,17 @@ bool DirectX11Model::Load()
 		return true;
 	}
 
-	if(read<uint8>(file) != 1)
+	uint8 fileVersion = 0;
+	if(read(file, fileVersion) || fileVersion != 1)
 	{
 		mResourceData->mConsole.threadSafePrintError(StringUtility::format("Unsupported file format for %", mResourceData->mFileName));
 		return true;
 	}
 
-	uint32 numberOfMeshes = read<uint32>(file);
+	uint32 numberOfMeshes = 0;
+	if(read(file, numberOfMeshes))
+		return true;
+
 	while(numberOfMeshes > 0)
 	{
 		std::unique_ptr<DirectX11Mesh> mesh(new DirectX11Mesh(mResourceData->mD3D11Device, mResourceData->mConsole, mResourceData->mResourceManager, mResourceData->mFileSystem));
