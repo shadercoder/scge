@@ -28,7 +28,7 @@ uint64 getSystemTime()
 uint64 getSystemTime()
 {
 	timeval time = {0, 0};
-	gettimeofday(&time, NULL);
+	gettimeofday(&time, nullptr);
 
 	return time.tv_sec * 1000 + time.tv_usec / 1000;
 }

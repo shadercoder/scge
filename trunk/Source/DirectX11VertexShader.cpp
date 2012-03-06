@@ -42,10 +42,11 @@ bool DirectX11VertexShader::Load()
 	shaderFlags |= D3D10_SHADER_DEBUG;
 #endif
 
-	CComPtr<ID3D10Blob> errorMessage;
-	HRESULT hr = D3DX11CompileFromFileA(file.first.c_str(), mResourceData->mShaderDefines, NULL, mResourceData->mFunctionName.c_str(), "vs_5_0", shaderFlags, 0, NULL, &mShaderBuffer, &errorMessage, NULL);
+	std::wstring fileName;
+	fileName.assign(file.first.begin(), file.first.end());
 
-	if(FAILED(hr))
+	CComPtr<ID3D10Blob> errorMessage;
+	if(FAILED(D3DX11CompileFromFile(fileName.c_str(), mResourceData->mShaderDefines, nullptr, mResourceData->mFunctionName.c_str(), "vs_5_0", shaderFlags, 0, nullptr, &mShaderBuffer, &errorMessage, nullptr)))
 	{
 		mResourceData->mConsole.threadSafePrintError(StringUtility::format("Failed to Compile Vertex Shader : %, function : %", mResourceData->mFileName, mResourceData->mFunctionName));
 
@@ -70,7 +71,7 @@ bool DirectX11VertexShader::Finalise()
 
 bool DirectX11VertexShader::finaliseLoad()
 {
-	if(FAILED(mResourceData->mD3D11Device->CreateVertexShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), NULL, &mVertexShader)))
+	if(FAILED(mResourceData->mD3D11Device->CreateVertexShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mVertexShader)))
 	{
 		const auto &error = StringUtility::format("Failed to Create Vertex Shader : %, function : %", mResourceData->mFileName, mResourceData->mFunctionName);
 		if(mResourceData->mMultiThreadLoad)
