@@ -2,9 +2,9 @@
 
 #include "scge\Console.h"
 
-ConsoleCommand::ConsoleCommand(const std::string &name, const std::string &comment)
-	: mName(name)
-	, mComment(comment)
+ConsoleCommand::ConsoleCommand(std::string name, std::string comment)
+	: mName(std::move(name))
+	, mComment(std::move(comment))
 	, mConsole(nullptr)
 {
 }
@@ -42,8 +42,8 @@ ConsoleCommand::~ConsoleCommand()
 	mConsole = nullptr;
 }
 
-void ConsoleCommand::storeCommand(const std::string &command) const
+void ConsoleCommand::storeCommand(std::string command) const
 {
 	if(mConsole)
-		mConsole->storeCommand(mName, command);
+		mConsole->storeCommand(mName, std::move(command));
 }

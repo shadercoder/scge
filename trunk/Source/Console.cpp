@@ -78,32 +78,25 @@ void Console::update()
 	}
 }
 
-void Console::print(const std::string &text)
+void Console::print(std::string text)
 {
 #if defined(SCGE_DEBUG)
 	OutputDebugStringA(("Console: " + text + "\n").c_str());
 #endif
 
-	mOutputHistory.push_back(text);
+	mOutputHistory.push_back(std::move(text));
 
 	if(mOutputHistory.size() > mMaxOutputHistory.getValue())
 		mOutputHistory.pop_front();
 }
 
-void Console::printError(const std::string &text)
+void Console::printError(std::string text)
 {
-	print("Error: " + text);
+	print("Error: " + std::move(text));
 }
 
-void Console::execute(const std::string &text, bool silent, bool canStoreCommand)
+void Console::execute(std::string text, bool silent, bool canStoreCommand)
 {
-	if(!silent)
-	{
-		mCommandHistory.push_back(text);
-		while(mCommandHistory.size() > mMaxCommandHistory.getValue())
-			mCommandHistory.pop_front();
-	}
-
 	StringUtility::foreachTokenSection(text, [this, silent, canStoreCommand](const std::vector<std::string> &arguments, const std::string &line)
 	{
 		auto command = mConsoleCommands.find(arguments[0]);
@@ -117,11 +110,18 @@ void Console::execute(const std::string &text, bool silent, bool canStoreCommand
 		else
 			command->second->parse(arguments, silent);
 	});
+
+	if(!silent)
+	{
+		mCommandHistory.push_back(std::move(text));
+		while(mCommandHistory.size() > mMaxCommandHistory.getValue())
+			mCommandHistory.pop_front();
+	}
 }
 
-void Console::storeCommand(const std::string &name, const std::string &command)
+void Console::storeCommand(std::string name, std::string command)
 {
-	mStoredCommands.insert(std::make_pair(name, command));
+	mStoredCommands.insert(std::make_pair(std::move(name), std::move(command)));
 }
 
 void Console::updateCommandHistory()
@@ -162,13 +162,13 @@ void Console::removeCommand(ConsoleCommand &command)
 	mConsoleCommands.erase(command.getName());
 }
 
-void Console::createAlias(const std::string &name, const std::string &command)
+void Console::createAlias(const std::string &name, std::string command)
 {
 	auto it = mAliases.find(name);
 	if(it != mAliases.end())
 		mAliases.erase(it);
 
-	std::unique_ptr<ConsoleAlias> newAlias(new ConsoleAlias(name, command));
+	std::unique_ptr<ConsoleAlias> newAlias(new ConsoleAlias(name, std::move(command)));
 	if(newAlias->initialise(*this))
 		mAliases[name] = std::move(newAlias);
 	else
@@ -240,21 +240,21 @@ std::vector<std::string> Console::getSuggestions(const std::string &text, unsign
 	return posibleValues;
 }
 
-void Console::threadSafePrint(const std::string &text)
+void Console::threadSafePrint(std::string text)
 {
 	boost::mutex::scoped_lock lock(mQueuedCommandsMutex);
 
-	mQueuedCommands.push(std::make_tuple(true, text, false, false));
+	mQueuedCommands.push(std::make_tuple(true, std::move(text), false, false));
 }
 
-void Console::threadSafePrintError(const std::string &text)
+void Console::threadSafePrintError(std::string text)
 {
-	threadSafePrint("Error: " + text);
+	threadSafePrint("Error: " + std::move(text));
 }
 
-void Console::threadSafeExecute(const std::string &text, bool silent, bool canStoreCommand)
+void Console::threadSafeExecute(std::string text, bool silent, bool canStoreCommand)
 {
 	boost::mutex::scoped_lock lock(mQueuedCommandsMutex);
 
-	mQueuedCommands.push(std::make_tuple(false, text, silent, canStoreCommand));
+	mQueuedCommands.push(std::make_tuple(false, std::move(text), silent, canStoreCommand));
 }

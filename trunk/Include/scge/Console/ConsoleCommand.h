@@ -9,7 +9,7 @@ class Console;
 class ConsoleCommand
 {
 public:
-	ConsoleCommand(const std::string &name, const std::string &comment);
+	ConsoleCommand(std::string name, std::string comment);
 	virtual ~ConsoleCommand();
 
 	bool initialise(Console &console);
@@ -20,7 +20,7 @@ public:
 	const std::string &getName() const { return mName; }
 	const std::string &getComment() const { return mComment; }
 
-	void storeCommand(const std::string &command) const;
+	void storeCommand(std::string command) const;
 
 	bool isInitialised() const { return mConsole != nullptr; }
 

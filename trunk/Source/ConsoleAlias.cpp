@@ -2,14 +2,14 @@
 
 #include "scge\Console.h"
 
-ConsoleAlias::ConsoleAlias(Console &console, const std::string &name, const std::string &command)
-	: ConsoleCommand(name, command)
+ConsoleAlias::ConsoleAlias(Console &console, std::string name, std::string command)
+	: ConsoleCommand(std::move(name), std::move(command))
 {
 	initialise(console);
 }
 
-ConsoleAlias::ConsoleAlias(const std::string &name, const std::string &command)
-	: ConsoleCommand(name, command)
+ConsoleAlias::ConsoleAlias(std::string name, std::string command)
+	: ConsoleCommand(std::move(name), std::move(command))
 {
 }
 

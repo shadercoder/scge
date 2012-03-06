@@ -82,7 +82,7 @@ namespace StringUtility
 		{
 			if(*s == '%')
 			{
-				ss << value;
+				ss << toString(value1);
 				formatRecurse(++s, ss, args...);
 				return;
 			}
@@ -114,7 +114,7 @@ namespace StringUtility
 	{
 		while(*s)
 		{
-			if(*s == '%') { ss << value1; formatRecurse(++s, ss); return; }
+			if(*s == '%') { ss << toString(value1); formatRecurse(++s, ss); return; }
 			ss.put(*s++);
 		}
 	}
@@ -122,7 +122,7 @@ namespace StringUtility
 	{
 		while(*s)
 		{
-			if(*s == '%') { ss << value1; formatRecurse(++s, ss, value2); return; }
+			if(*s == '%') { ss << toString(value1); formatRecurse(++s, ss, value2); return; }
 			ss.put(*s++);
 		}
 	}
@@ -130,7 +130,7 @@ namespace StringUtility
 	{
 		while(*s)
 		{
-			if(*s == '%') { ss << value1; formatRecurse(++s, ss, value2, value3); return; }
+			if(*s == '%') { ss << toString(value1); formatRecurse(++s, ss, value2, value3); return; }
 			ss.put(*s++);
 		}
 	}
@@ -138,7 +138,7 @@ namespace StringUtility
 	{
 		while(*s)
 		{
-			if(*s == '%') { ss << value1; formatRecurse(++s, ss, value2, value3, value4); return; }
+			if(*s == '%') { ss << toString(value1); formatRecurse(++s, ss, value2, value3, value4); return; }
 			ss.put(*s++);
 		}
 	}
@@ -146,7 +146,7 @@ namespace StringUtility
 	{
 		while(*s)
 		{
-			if(*s == '%') { ss << value1; formatRecurse(++s, ss, value2, value3, value4, value5); return; }
+			if(*s == '%') { ss << toString(value1); formatRecurse(++s, ss, value2, value3, value4, value5); return; }
 			ss.put(*s++);
 		}
 	}

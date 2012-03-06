@@ -24,17 +24,17 @@ public:
 
 	void update();
 
-	void print(const std::string &text);
-	void printError(const std::string &text);
-	void execute(const std::string &text, bool silent = false, bool canStoreCommand = false);
+	void print(std::string text);
+	void printError(std::string text);
+	void execute(std::string text, bool silent = false, bool canStoreCommand = false);
 
-	void threadSafePrint(const std::string &text);
-	void threadSafePrintError(const std::string &text);
-	void threadSafeExecute(const std::string &text, bool silent = false, bool canStoreCommand = false);
+	void threadSafePrint(std::string text);
+	void threadSafePrintError(std::string text);
+	void threadSafeExecute(std::string text, bool silent = false, bool canStoreCommand = false);
 
 	bool executeFile(const std::string &file, bool silent = false, bool canStoreCommand = false);
 
-	void storeCommand(const std::string &name, const std::string &command);
+	void storeCommand(std::string name, std::string command);
 
 	void updateCommandHistory();
 	void updateOutputHistory();
@@ -42,7 +42,7 @@ public:
 	bool registerCommand(ConsoleCommand &command);
 	void removeCommand(ConsoleCommand &command);
 
-	void createAlias(const std::string &name, const std::string &command);
+	void createAlias(const std::string &name, std::string command);
 	void deleteAlias(const std::string &name);
 
 	void addDefaultCommand(const std::string &command);
