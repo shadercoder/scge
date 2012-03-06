@@ -41,10 +41,11 @@ bool DirectX11PixelShader::Load()
 	shaderFlags |= D3D10_SHADER_DEBUG;
 #endif
 
+	std::wstring fileName;
+	fileName.assign(file.first.begin(), file.first.end());
+
 	CComPtr<ID3D10Blob> errorMessage;
-	HRESULT hr = D3DX11CompileFromFileA(file.first.c_str(), mResourceData->mShaderDefines, NULL, mResourceData->mFunctionName.c_str(), "ps_5_0", shaderFlags, 0, NULL, &mShaderBuffer, &errorMessage, NULL);
-	
-	if(FAILED(hr))
+	if(FAILED(D3DX11CompileFromFile(fileName.c_str(), mResourceData->mShaderDefines, nullptr, mResourceData->mFunctionName.c_str(), "ps_5_0", shaderFlags, 0, nullptr, &mShaderBuffer, &errorMessage, nullptr)))
 	{
 		mResourceData->mConsole.threadSafePrintError(StringUtility::format("Failed to compile Pixel Shader : %, function : %", mResourceData->mFileName, mResourceData->mFunctionName));
 
@@ -77,7 +78,7 @@ bool DirectX11PixelShader::Finalise()
 
 bool DirectX11PixelShader::finaliseLoad()
 {
-	if(FAILED(mResourceData->mD3D11Device->CreatePixelShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), NULL, &mPixelShader)))
+	if(FAILED(mResourceData->mD3D11Device->CreatePixelShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mPixelShader)))
 		return true;
 
 	mShaderBuffer.Release();

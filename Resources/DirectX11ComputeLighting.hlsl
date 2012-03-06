@@ -9,7 +9,9 @@
 // Globals
 // --------------------------------------------------------------------------------------
 RWStructuredBuffer<uint2> gLitBuffer : register( u0 );
-Texture2DMS<float4, MSAA_SAMPLES> gGBuffer[3] : register( t0 );
+Texture2DMS<float4, MSAA_SAMPLES> gGBufferAlbedo : register ( t0 );
+Texture2DMS<float4, MSAA_SAMPLES> gGBufferNormal : register ( t1 );
+Texture2DMS<float4, MSAA_SAMPLES> gGBufferDepth  : register ( t2 );
 StructuredBuffer<PointLight> gLights : register( t3 );
 
 cbuffer FrameConstants : register( b0 )
@@ -54,9 +56,9 @@ void WriteAllSamples(uint2 coords, float4 value)
 
 void ComputeSurfaceDataFromGBuffer(uint2 viewPosition, uint sampleIndex, out SurfaceData Output)
 {
-	float4 albedo         = gGBuffer[0].Load(viewPosition, sampleIndex).xyzw;
-	float4 normalSpecular = gGBuffer[1].Load(viewPosition, sampleIndex).xyzw;
-	float  zBuffer        = gGBuffer[2].Load(viewPosition, sampleIndex).x;
+	float4 albedo         = gGBufferAlbedo.Load(viewPosition, sampleIndex).xyzw;
+	float4 normalSpecular = gGBufferNormal.Load(viewPosition, sampleIndex).xyzw;
+	float  zBuffer        = gGBufferDepth.Load(viewPosition, sampleIndex).x;
 
 	Output.mAlbedo.rgb = albedo.rgb;
 	Output.mAlbedo.a = 1.0f;

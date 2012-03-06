@@ -41,10 +41,11 @@ bool DirectX11ComputeShader::Load()
 	shaderFlags |= D3D10_SHADER_DEBUG;
 #endif
 
-	CComPtr<ID3D10Blob> errorMessage;
-	HRESULT hr = D3DX11CompileFromFileA(file.first.c_str(), mResourceData->mShaderDefines, NULL, mResourceData->mFunctionName.c_str(), "cs_5_0", shaderFlags, 0, NULL, &mShaderBuffer, &errorMessage, NULL);
+	std::wstring fileName;
+	fileName.assign(file.first.begin(), file.first.end());
 
-	if(FAILED(hr))
+	CComPtr<ID3D10Blob> errorMessage;
+	if(FAILED(D3DX11CompileFromFile(fileName.c_str(), mResourceData->mShaderDefines, nullptr, mResourceData->mFunctionName.c_str(), "cs_5_0", shaderFlags, 0, nullptr, &mShaderBuffer, &errorMessage, nullptr)))
 	{
 		mResourceData->mConsole.threadSafePrintError(StringUtility::format("Failed to compile Compute Shader : %, function : %", mResourceData->mFileName, mResourceData->mFunctionName));
 
@@ -69,7 +70,7 @@ bool DirectX11ComputeShader::Finalise()
 
 bool DirectX11ComputeShader::finaliseLoad()
 {
-	if(FAILED(mResourceData->mD3D11Device->CreateComputeShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), NULL, &mComputeShader)))
+	if(FAILED(mResourceData->mD3D11Device->CreateComputeShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mComputeShader)))
 	{
 		const auto &error = StringUtility::format("Failed to Create Compute Shader : %, function : %", mResourceData->mFileName, mResourceData->mFunctionName);
 		if(mResourceData->mMultiThreadLoad)
