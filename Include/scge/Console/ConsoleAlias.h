@@ -6,8 +6,8 @@
 class ConsoleAlias: public ConsoleCommand
 {
 public:
-	ConsoleAlias(Console &console, const std::string &name, const std::string &command);
-	ConsoleAlias(const std::string &name, const std::string &command);
+	ConsoleAlias(Console &console, std::string name, std::string command);
+	ConsoleAlias(std::string name, std::string command);
 
 	void parse(const std::vector<std::string> &arguments, bool silent);
 };
