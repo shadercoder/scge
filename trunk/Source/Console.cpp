@@ -90,11 +90,6 @@ void Console::print(std::string text)
 		mOutputHistory.pop_front();
 }
 
-void Console::printError(std::string text)
-{
-	print("Error: " + std::move(text));
-}
-
 void Console::execute(std::string text, bool silent, bool canStoreCommand)
 {
 	StringUtility::foreachTokenSection(text, [this, silent, canStoreCommand](const std::vector<std::string> &arguments, const std::string &line)
@@ -245,11 +240,6 @@ void Console::threadSafePrint(std::string text)
 	boost::mutex::scoped_lock lock(mQueuedCommandsMutex);
 
 	mQueuedCommands.push(std::make_tuple(true, std::move(text), false, false));
-}
-
-void Console::threadSafePrintError(std::string text)
-{
-	threadSafePrint("Error: " + std::move(text));
 }
 
 void Console::threadSafeExecute(std::string text, bool silent, bool canStoreCommand)

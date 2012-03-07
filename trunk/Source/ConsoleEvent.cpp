@@ -3,8 +3,8 @@
 #include "scge\Console.h"
 #include "scge\InputDevice.h"
 
-ConsoleEvent::ConsoleEvent(Console &console, InputDevice &inputDevice, const std::string &name)
-	: ConsoleCommand(name, "")
+ConsoleEvent::ConsoleEvent(Console &console, InputDevice &inputDevice, std::string name)
+	: ConsoleCommand(std::move(name), "")
 	, mInputDevice(inputDevice)
 	, mRegisteredForInput(false)
 	, mEventDown(false)

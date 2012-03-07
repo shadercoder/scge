@@ -13,7 +13,7 @@
 class Window
 {
 public:
-	Window(const std::string &name, Console& console, ResourceManager& resourceManager, FileSystem &fileSystem, unsigned int defaultWidth = GetDesktopWidth(), unsigned int defaultHeight = GetDesktopHeight(), bool defaultWindowed = true, bool defaultMaximised = true);
+	Window(std::string name, Console& console, ResourceManager& resourceManager, FileSystem &fileSystem, unsigned int defaultWidth = GetDesktopWidth(), unsigned int defaultHeight = GetDesktopHeight(), bool defaultWindowed = true, bool defaultMaximised = true);
 	~Window();
 
 	LRESULT WindowProc(UINT msg, WPARAM wParam, LPARAM lParam);

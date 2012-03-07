@@ -7,7 +7,7 @@ class InputDevice;
 class ConsoleEvent : public ConsoleCommand
 {
 public:
-	ConsoleEvent(Console &console, InputDevice &inputDevice, const std::string &name);
+	ConsoleEvent(Console &console, InputDevice &inputDevice, std::string name);
 	~ConsoleEvent();
 
 	void parse(const std::vector<std::string> &arguments, bool silent);

@@ -34,7 +34,7 @@ LRESULT CALLBACK StaticWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
-Window::Window(const std::string &name, Console& console, ResourceManager& resourceManager, FileSystem &fileSystem, unsigned int defaultWidth, unsigned int defaultHeight, bool defaultWindowed, bool defaultMaximised)
+Window::Window(std::string name, Console& console, ResourceManager& resourceManager, FileSystem &fileSystem, unsigned int defaultWidth, unsigned int defaultHeight, bool defaultWindowed, bool defaultMaximised)
 	: mWidth(console, "Window.Width", "Width of the Game Window", 640, GetDesktopWidth(), defaultWidth)
 	, mHeight(console, "Window.Height", "Height of the Game Window", 480, GetDesktopHeight(), defaultHeight)
 	, mWindowed(console, "Window.Windowed", "Whether the window fill the screen or not", defaultWindowed)
@@ -42,7 +42,7 @@ Window::Window(const std::string &name, Console& console, ResourceManager& resou
 	, mOverrideAltF4(console, "Window.OverrideAltF4", "Stops Alt+F4 closing the game", true)
 	, mOverrideWindowsKey(console, "Window.OverrideWindowsKey", "Stops the windows key from minimising the game", false)
 	, mMouseClippedDesired(console, "Window.LockMouse", "Locks the mouse to inside the window", false)
-	, mWindowName(name)
+	, mWindowName(std::move(name))
 	, mHwnd(nullptr)
 	, mHInstance(GetModuleHandle(nullptr))
 	, mInitialised(false)
