@@ -109,8 +109,8 @@ template <typename VariableType, bool useMinMax = false, bool useOnChange = fals
 class ConsoleVariable: public ConsoleCommand
 {
 public:
-	ConsoleVariable(Console &console, const std::string &name, const std::string &comment, const VariableType &defaultValue)
-		: ConsoleCommand(name, comment)
+	ConsoleVariable(Console &console, std::string name, std::string comment, const VariableType &defaultValue)
+		: ConsoleCommand(std::move(name), std::move(comment))
 		, mCurrentValue(defaultValue)
 		, mNewValue(defaultValue)
 		, mDefaultValue(defaultValue)
@@ -123,8 +123,8 @@ public:
 		updateValue();
 	}
 
-	ConsoleVariable(Console &console, const std::string &name, const std::string &comment, const VariableType &minValue, const VariableType &maxValue, const VariableType &defaultValue)
-		: ConsoleCommand(name, comment)
+	ConsoleVariable(Console &console, std::string name, std::string comment, const VariableType &minValue, const VariableType &maxValue, const VariableType &defaultValue)
+		: ConsoleCommand(std::move(name), std::move(comment))
 		, mCurrentValue(defaultValue)
 		, mNewValue(defaultValue)
 		, mDefaultValue(defaultValue)
@@ -139,8 +139,8 @@ public:
 		updateValue();
 	}
 
-	ConsoleVariable(Console &console, const std::string &name, const std::string &comment, const VariableType &defaultValue, std::function<void()> onChange)
-		: ConsoleCommand(name, comment)
+	ConsoleVariable(Console &console, std::string name, std::string comment, const VariableType &defaultValue, std::function<void()> onChange)
+		: ConsoleCommand(std::move(name), std::move(comment))
 		, mCurrentValue(defaultValue)
 		, mNewValue(defaultValue)
 		, mDefaultValue(defaultValue)
@@ -153,8 +153,8 @@ public:
 		updateValue();
 	}
 
-	ConsoleVariable(Console &console, const std::string &name, const std::string &comment, const VariableType &minValue, const VariableType &maxValue, const VariableType &defaultValue, std::function<void()> onChange)
-		: ConsoleCommand(name, comment)
+	ConsoleVariable(Console &console, std::string name, std::string comment, const VariableType &minValue, const VariableType &maxValue, const VariableType &defaultValue, std::function<void()> onChange)
+		: ConsoleCommand(std::move(name), std::move(comment))
 		, mCurrentValue(defaultValue)
 		, mNewValue(defaultValue)
 		, mDefaultValue(defaultValue)
@@ -169,8 +169,8 @@ public:
 		updateValue();
 	}
 
-	ConsoleVariable(const std::string &name, const std::string &comment)
-		: ConsoleCommand(name, comment)
+	ConsoleVariable(std::string name, std::string comment)
+		: ConsoleCommand(std::move(name), std::move(comment))
 		, mCurrentValue()
 		, mNewValue()
 		, mDefaultValue()

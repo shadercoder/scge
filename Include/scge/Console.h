@@ -25,11 +25,11 @@ public:
 	void update();
 
 	void print(std::string text);
-	void printError(std::string text);
+	void printError(const std::string &text) { print("Error: " + text); }
 	void execute(std::string text, bool silent = false, bool canStoreCommand = false);
 
 	void threadSafePrint(std::string text);
-	void threadSafePrintError(std::string text);
+	void threadSafePrintError(const std::string &text) { threadSafePrint("Error: " + text); }
 	void threadSafeExecute(std::string text, bool silent = false, bool canStoreCommand = false);
 
 	bool executeFile(const std::string &file, bool silent = false, bool canStoreCommand = false);
