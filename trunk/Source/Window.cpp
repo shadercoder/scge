@@ -90,7 +90,7 @@ bool Window::Initialise()
 	if(mWindowed && !mMaximised)
 	{
 		RECT rect;
-		rect.left = 1600 + (GetSystemMetrics(SM_CXSCREEN) - static_cast<int>(mWidth + gExtraWidth)) / 2;
+		rect.left = (GetSystemMetrics(SM_CXSCREEN) - static_cast<int>(mWidth + gExtraWidth)) / 2;
 		rect.top = (GetSystemMetrics(SM_CYSCREEN) - static_cast<int>(mHeight + gExtraHeight)) / 2;
 		rect.right = rect.left + mWidth;
 		rect.bottom = rect.top + mHeight;
@@ -393,8 +393,8 @@ LRESULT Window::WindowProc(UINT msg, WPARAM wParam, LPARAM lParam)
 
 			RECT rcWindow = {};
 			GetClientRect(mHwnd, &rcWindow);
-			mWidth.setValue(rcWindow.right-rcWindow.left);
-			mHeight.setValue(rcWindow.bottom-rcWindow.top);
+			mWidth.setValue(rcWindow.right - rcWindow.left);
+			mHeight.setValue(rcWindow.bottom - rcWindow.top);
 		}
 		else if(wParam == SC_MINIMIZE)
 		{

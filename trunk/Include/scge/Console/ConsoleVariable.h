@@ -330,21 +330,16 @@ private:
 		parseValue(stringValue, silent, std::integral_constant<bool, useMinMax>());
 	}
 
-	inline void parseValue(const std::string &stringValue, bool silent, std::tr1::false_type)
+	inline void parseValue(const std::string &stringValue, bool silent, std::false_type)
 	{
-		VariableType temp;
-		if(stringValue == "default")
-			temp = mDefaultValue;
-		else
-			temp = StringUtility::toVariable<VariableType>(stringValue);
+		VariableType temp = stringValue == "default" ? mDefaultValue : StringUtility::toVariable<VariableType>(stringValue);
 
-		if(!silent)
-			mConsole->print(StringUtility::format("% = %", mName, temp));
+		if(!silent) mConsole->print(StringUtility::format("% = %", mName, temp));
 
 		setValue(temp);
 	}
 
-	inline void parseValue(const std::string &stringValue, bool silent, std::tr1::true_type)
+	inline void parseValue(const std::string &stringValue, bool silent, std::true_type)
 	{
 		VariableType temp;
 		if(stringValue == "default")
@@ -368,14 +363,14 @@ private:
 		printCommand(std::integral_constant<bool, useMinMax>());
 	}
 
-	inline void printCommand(std::tr1::false_type)
+	inline void printCommand(std::false_type)
 	{
 		mConsole->print(StringUtility::format("% = %, Default = %", mName, mNewValue, mDefaultValue));
 		if(!mComment.empty())
 			mConsole->print(mComment);
 	}
 
-	inline void printCommand(std::tr1::true_type)
+	inline void printCommand(std::true_type)
 	{
 		mConsole->print(StringUtility::format("% = %, Default = %, Min = %, Max = %", mName, mNewValue, mDefaultValue, getMinValue(), getMaxValue()));
 		if(!mComment.empty())
@@ -387,9 +382,9 @@ private:
 		clampValues(std::integral_constant<bool, useMinMax>());
 	}
 
-	inline void clampValues(std::tr1::false_type){}
+	inline void clampValues(std::false_type) {}
 
-	inline void clampValues(std::tr1::true_type)
+	inline void clampValues(std::true_type)
 	{
 		if(!isInitialised())
 			mMinMax.clampValue(mCurrentValue);

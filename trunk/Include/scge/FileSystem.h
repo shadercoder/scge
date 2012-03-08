@@ -8,7 +8,7 @@ class Resource;
 class FileSystem
 {
 public:
-	FileSystem(const std::string & resourceDirectory = "Resources");
+	FileSystem(std::string resourceDirectory = "Resources");
 	~FileSystem();
 
 	void Update();
