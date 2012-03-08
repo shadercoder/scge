@@ -1,8 +1,9 @@
 #ifndef DirectX11Depth2DHelper_h__
 #define DirectX11Depth2DHelper_h__
 
+#include "scge\Graphics\DirectX11\DirectX11ComPtr.h"
+
 #include <d3d11.h>
-#include <atlbase.h>
 #include <vector>
 
 class DirectX11Depth2DHelper
@@ -36,20 +37,20 @@ public:
 	void Release();
 
 	ID3D11Texture2D *GetTexture() const { return mTexture; }
-	ID3D11Texture2D *const *GetTexturePointer() const { return &mTexture.p; }
+	ID3D11Texture2D *const *GetTexturePointer() const { return &mTexture; }
 
 	ID3D11DepthStencilView *GetDepthStencil(std::size_t arrayIndex = 0) const { return mDepthStencilElements[arrayIndex]; }
-	ID3D11DepthStencilView *const *GetDepthStencilPointer(std::size_t arrayIndex = 0) const { return &mDepthStencilElements[arrayIndex].p; }
+	ID3D11DepthStencilView *const *GetDepthStencilPointer(std::size_t arrayIndex = 0) const { return &mDepthStencilElements[arrayIndex]; }
 
 	ID3D11ShaderResourceView *GetShaderResource() const { return mShaderResource; }
-	ID3D11ShaderResourceView *const *GetShaderResourcePointer() const { return &mShaderResource.p; }
+	ID3D11ShaderResourceView *const *GetShaderResourcePointer() const { return &mShaderResource; }
 
 private:
 	bool InternalConstruct(ID3D11Device* d3dDevice, int width, int height, UINT bindFlags, int arraySize, int sampleCount, int sampleQuality, D3D11_DSV_DIMENSION dsvDimension, D3D11_SRV_DIMENSION srvDimension, bool stencil);
 
-	CComPtr<ID3D11Texture2D> mTexture;
-	CComPtr<ID3D11ShaderResourceView> mShaderResource;
-	std::vector<CComPtr<ID3D11DepthStencilView>> mDepthStencilElements;
+	ComPtr<ID3D11Texture2D> mTexture;
+	ComPtr<ID3D11ShaderResourceView> mShaderResource;
+	std::vector<ComPtr<ID3D11DepthStencilView>> mDepthStencilElements;
 
 	DirectX11Depth2DHelper(const DirectX11Depth2DHelper&);
 	DirectX11Depth2DHelper& operator=(const DirectX11Depth2DHelper&);

@@ -14,7 +14,6 @@
 
 #include <d3d11.h>
 #include <d3dx11.h>
-#include <atlbase.h>
 #include <vector>
 #include <istream>
 

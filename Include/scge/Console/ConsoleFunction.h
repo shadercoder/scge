@@ -13,7 +13,7 @@ public:
 	ConsoleFunction(Console &console, const std::string &name, const std::string &comment, std::function<void(const std::vector<std::string> &, bool)> function, unsigned int minArguments = 0, unsigned int maxArguments = 0);
 	ConsoleFunction(const std::string &name, const std::string &comment);
 
-	void parse(const std::vector<std::string> &arguments, bool silent);
+	virtual void parse(const std::vector<std::string> &arguments, bool silent) final;
 
 	bool initialise(Console &console) { return ConsoleCommand::initialise(console); }
 	bool initialise(Console &console, std::function<void(const std::vector<std::string> &, bool)> function, unsigned int minArguments = 0, unsigned int maxArguments = 0);

@@ -13,6 +13,8 @@
 #include "scge\Graphics\DirectX11\DirectX11Texture2DHelper.h"
 #include "scge\Graphics\DirectX11\DirectX11BufferHelper.h"
 
+#include "scge\Graphics\DirectX11\DirectX11ComPtr.h"
+
 class DirectX11Renderer3D : public Renderer3D
 {
 public:
@@ -35,11 +37,11 @@ private:
 	unsigned int mWidth;
 	unsigned int mHeight;
 	
-	CComPtr<ID3D11SamplerState> mDiffuseSampler;
-	CComPtr<ID3D11BlendState> mGeometryBlendState;
+	ComPtr<ID3D11SamplerState> mDiffuseSampler;
+	ComPtr<ID3D11BlendState> mGeometryBlendState;
 
-	CComPtr<ID3D11RasterizerState> mOpaqueRasterizerState;
-	CComPtr<ID3D11RasterizerState> mAlphaTestRasterizerState;
+	ComPtr<ID3D11RasterizerState> mOpaqueRasterizerState;
+	ComPtr<ID3D11RasterizerState> mAlphaTestRasterizerState;
 
 	ResourceReference<DirectX11VertexShader> mGBufferVS;
 	ResourceReference<DirectX11PixelShader> mGBufferOpaquePS;
@@ -69,13 +71,13 @@ private:
 	DirectX11BufferHelper<PerObjectCB> mPerObjectCB;
 
 	bool CreateRenderTarget(const DXGI_SWAP_CHAIN_DESC &swapChainDesc);
-	CComPtr<ID3D11RenderTargetView> mRenderTargetView;
-	CComPtr<ID3D11ShaderResourceView> mRenderTargetSRV;
+	ComPtr<ID3D11RenderTargetView> mRenderTargetView;
+	ComPtr<ID3D11ShaderResourceView> mRenderTargetSRV;
 
 	bool CreateDepthBuffer(const DXGI_SWAP_CHAIN_DESC &swapChainDesc);
 	DirectX11Depth2DHelper mDepthBuffer;
-	CComPtr<ID3D11DepthStencilView> mDepthBufferReadOnlyDSV;
-	CComPtr<ID3D11DepthStencilState> mDepthState;
+	ComPtr<ID3D11DepthStencilView> mDepthBufferReadOnlyDSV;
+	ComPtr<ID3D11DepthStencilState> mDepthState;
 
 	bool CreateGBuffer(const DXGI_SWAP_CHAIN_DESC &swapChainDesc);
 	std::vector<DirectX11Texture2DHelper> mGBuffer;

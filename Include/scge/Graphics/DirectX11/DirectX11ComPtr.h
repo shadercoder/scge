@@ -17,6 +17,11 @@ public:
 		if(mPointer) mPointer->AddRef();
 	}
 
+	~ComPtr()
+	{
+		if(mPointer) mPointer->Release();
+	}
+
 	ComPtr& operator=(T* pointer)
 	{
 		if(mPointer) mPointer->Release();
@@ -26,7 +31,7 @@ public:
 		return *this;
 	}
 
-	ComPtr& operator=(ComPtr pointer)
+	ComPtr& operator=(ComPtr<T> pointer)
 	{
 		if(mPointer) mPointer->Release();
 		mPointer = pointer.mPointer;
@@ -35,10 +40,16 @@ public:
 		return *this;
 	}
 
-	T& operator->() const
+	T* operator->()
 	{
 		SCGE_ASSERT(mPointer != nullptr);
-		return *mPointer;
+		return mPointer;
+	}
+
+	const T* operator->() const
+	{
+		SCGE_ASSERT(mPointer != nullptr);
+		return mPointer;
 	}
 
 	operator T*() const
@@ -46,7 +57,18 @@ public:
 		return mPointer;
 	}
 
-	T& operator*() const
+	operator T*const *() const
+	{
+		return &mPointer;
+	}
+
+	T& operator*()
+	{
+		SCGE_ASSERT(mPointer != nullptr);
+		return *mPointer;
+	}
+
+	const T& operator*() const
 	{
 		SCGE_ASSERT(mPointer != nullptr);
 		return *mPointer;
@@ -54,13 +76,18 @@ public:
 
 	T** operator&()
 	{
-		SCGE_ASSERT(mPointer == nullptr);
+		SCGE_ASSERT_MESSAGE(mPointer == nullptr, "Returning a pointer to the pointer is unsafe if it is set as it may be changed without being released");
 		return &mPointer;
 	}
 
 	T*const * operator&() const
 	{
 		return &mPointer;
+	}
+
+	operator bool() const
+	{
+		return mPointer != nullptr;
 	}
 
 	void Release()

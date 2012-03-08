@@ -10,7 +10,7 @@ public:
 	ConsoleEvent(Console &console, InputDevice &inputDevice, std::string name);
 	~ConsoleEvent();
 
-	void parse(const std::vector<std::string> &arguments, bool silent);
+	virtual void parse(const std::vector<std::string> &arguments, bool silent) final;
 
 	void resetState() { mEventUp = false; mEventDown = false; mEventHeld = false; }
 

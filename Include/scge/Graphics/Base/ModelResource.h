@@ -9,7 +9,8 @@ class ModelResourceData : public FileResourceData
 public:
 	ModelResourceData(FileSystem &fileSystem) : FileResourceData(fileSystem) {}
 
-	virtual std::string getFactory() const { return "Model"; }
+	virtual std::string getIdentifier() const final { return mFileName; }
+	virtual std::string getFactory() const final { return "Model"; }
 };
 
 class ModelResource : public FileResource

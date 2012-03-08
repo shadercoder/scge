@@ -183,7 +183,7 @@ bool DirectX11Renderer3D::Render()
 
 bool DirectX11Renderer3D::CreateRenderTarget(const DXGI_SWAP_CHAIN_DESC &swapChainDesc)
 {
-	CComPtr<ID3D11Texture2D> backBuffer;
+	ComPtr<ID3D11Texture2D> backBuffer;
 	if(FAILED(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*) &backBuffer)))
 		return true;
 
@@ -256,7 +256,7 @@ void DirectX11Renderer3D::RenderGBuffer()
 {
 	mDeviceContext->ClearDepthStencilView(mDepthBuffer.GetDepthStencil(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 0.0f, 0);
 
-	mDeviceContext->PSSetSamplers(0, 1, &mDiffuseSampler.p);
+	mDeviceContext->PSSetSamplers(0, 1, mDiffuseSampler);
 	mDeviceContext->OMSetDepthStencilState(mDepthState, 0);
 	mDeviceContext->OMSetRenderTargets(mGBufferRTV.size(), mGBufferRTV.data(), mDepthBuffer.GetDepthStencil());
 	mDeviceContext->OMSetBlendState(mGeometryBlendState, 0, 0xFFFFFFFF);
@@ -359,7 +359,7 @@ void DirectX11Renderer3D::ComputeLighting()
 
 void DirectX11Renderer3D::FinalPass()
 {
-	mDeviceContext->OMSetRenderTargets(1, &mRenderTargetView.p, nullptr);
+	mDeviceContext->OMSetRenderTargets(1, mRenderTargetView, nullptr);
 
 	mDeviceContext->PSSetConstantBuffers(0, 1, mPerFrameConstants.GetBufferPointer());
 

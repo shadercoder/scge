@@ -74,6 +74,7 @@
     <ClInclude Include="..\..\Resources\DirectX11SharedDefines.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Assert.cpp" />
     <ClCompile Include="..\..\Source\AudioDevice.cpp" />
     <ClCompile Include="..\..\Source\BoundingBox.cpp" />
     <ClCompile Include="..\..\Source\BoundingSphere.cpp" />

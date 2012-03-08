@@ -3,20 +3,20 @@
 
 #include "scge\FileSystem\FileResource.h"
 #include "scge\Console.h"
+#include "scge\Graphics\DirectX11\DirectX11ComPtr.h"
 
 #include <d3d11.h>
 #include <d3dx11.h>
-#include <atlbase.h>
 
 class DirectX11ComputeShaderData : public FileResourceData
 {
 public:
 	DirectX11ComputeShaderData(ID3D11Device *pd3dDevice, const D3D10_SHADER_MACRO *shaderDefines, Console &console, FileSystem &fileSystem, bool multiThreadLoad, const std::string &arguments);
 
-	virtual std::string getIdentifier() const;
-	virtual std::string getFactory() const { return "ComputeShader"; }
+	virtual std::string getIdentifier() const final;
+	virtual std::string getFactory() const final { return "ComputeShader"; }
 
-	virtual std::shared_ptr<Resource> createResource() const;
+	virtual std::shared_ptr<Resource> createResource() const final;
 
 	ID3D11Device *mD3D11Device;
 	const D3D10_SHADER_MACRO *mShaderDefines;
@@ -33,9 +33,9 @@ class DirectX11ComputeShader : public ResourceBase<DirectX11ComputeShaderData, F
 public:
 	DirectX11ComputeShader(const DirectX11ComputeShaderData *data) : ResourceBase<DirectX11ComputeShaderData, FileResource>(data) {}
 
-	virtual bool Load();
-	virtual bool Finalise();
-	virtual void Release();
+	virtual bool Load() final;
+	virtual bool Finalise() final;
+	virtual void Release() final;
 
 	ID3D11ComputeShader *getShader() const { return mComputeShader; }
 
@@ -49,9 +49,9 @@ public:
 	};
 
 private:
-	CComPtr<ID3D11ComputeShader> mComputeShader;
+	ComPtr<ID3D11ComputeShader> mComputeShader;
 
-	CComPtr<ID3D10Blob> mShaderBuffer;
+	ComPtr<ID3D10Blob> mShaderBuffer;
 
 	bool finaliseLoad();
 };

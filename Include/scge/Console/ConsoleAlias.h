@@ -9,7 +9,7 @@ public:
 	ConsoleAlias(Console &console, std::string name, std::string command);
 	ConsoleAlias(std::string name, std::string command);
 
-	void parse(const std::vector<std::string> &arguments, bool silent);
+	virtual void parse(const std::vector<std::string> &arguments, bool silent) final;
 };
 
 #endif // __ConsoleAlias_h__

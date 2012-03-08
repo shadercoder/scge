@@ -235,7 +235,7 @@ public:
 		return true;
 	}
 
-	void parse(const std::vector<std::string> &arguments, bool silent)
+	virtual void parse(const std::vector<std::string> &arguments, bool silent) final
 	{
 		if(arguments.size() == 2)
 		{

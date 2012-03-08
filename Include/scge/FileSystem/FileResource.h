@@ -9,7 +9,7 @@ class FileResourceData : public ResourceData
 public:
 	FileResourceData(FileSystem &fileSystem) : mFileSystem(fileSystem), mFileName() {}
 
-	virtual std::string getIdentifier() const { return mFileName; }
+	virtual std::string getIdentifier() const override { return mFileName; }
 
 	std::string mFileName;
 

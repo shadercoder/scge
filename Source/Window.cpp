@@ -90,7 +90,7 @@ bool Window::Initialise()
 	if(mWindowed && !mMaximised)
 	{
 		RECT rect;
-		rect.left = (GetSystemMetrics(SM_CXSCREEN) - static_cast<int>(mWidth + gExtraWidth)) / 2;
+		rect.left = 1600 + (GetSystemMetrics(SM_CXSCREEN) - static_cast<int>(mWidth + gExtraWidth)) / 2;
 		rect.top = (GetSystemMetrics(SM_CYSCREEN) - static_cast<int>(mHeight + gExtraHeight)) / 2;
 		rect.right = rect.left + mWidth;
 		rect.bottom = rect.top + mHeight;
