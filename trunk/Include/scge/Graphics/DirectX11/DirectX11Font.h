@@ -3,10 +3,11 @@
 
 #include "scge\FileSystem\FileResource.h"
 
+#include "scge\Graphics\DirectX11\DirectX11ComPtr.h"
+
 #include <d3d11.h>
 #include <d3dx11.h>
 #include <d3dx10.h>
-#include <atlbase.h>
 
 #pragma comment(lib, "gdiplus.lib")
 
@@ -95,8 +96,8 @@ public:
 	};
 
 private:
-	CComPtr<ID3D11Texture2D> mTexture;
-	CComPtr<ID3D11ShaderResourceView> mTextureSRV;
+	ComPtr<ID3D11Texture2D> mTexture;
+	ComPtr<ID3D11ShaderResourceView> mTextureSRV;
 
 	CharDesc mCharDescs[NumChars];
 	unsigned int mTextureHeight;

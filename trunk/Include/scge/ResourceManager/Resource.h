@@ -46,7 +46,7 @@ class ResourceData
 public:
 	virtual ~ResourceData() {}
 
-	virtual std::string getFullIdentifier() const { return "[" + getFactory() + "] " + getIdentifier(); }
+	std::string getFullIdentifier() const { return "[" + getFactory() + "] " + getIdentifier(); }
 	virtual std::string getIdentifier() const = 0;
 	virtual std::string getFactory() const = 0;
 
@@ -91,9 +91,9 @@ class ResourceBase : public BaseType
 public:
 	ResourceBase(const DataType *data) : BaseType(data), mResourceData(data) {}
 
-	virtual std::string getFullIdentifier() const { return mResourceData->getFullIdentifier(); }
-	virtual std::string getIdentifier() const { return mResourceData->getIdentifier(); }
-	virtual std::string getFactory() const { return mResourceData->getFactory(); }
+	virtual std::string getFullIdentifier() const final { return mResourceData->getFullIdentifier(); }
+	virtual std::string getIdentifier() const final { return mResourceData->getIdentifier(); }
+	virtual std::string getFactory() const final { return mResourceData->getFactory(); }
 
 protected:
 	const std::unique_ptr<const DataType> mResourceData;

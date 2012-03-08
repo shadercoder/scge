@@ -1,8 +1,9 @@
 #ifndef DirectX11StructuredBufferHelper_h__
 #define DirectX11StructuredBufferHelper_h__
 
+#include "scge\Graphics\DirectX11\DirectX11ComPtr.h"
+
 #include <d3d11.h>
-#include <atlbase.h>
 #include <vector>
 
 template <typename T>
@@ -35,22 +36,22 @@ public:
 	void Release();
 
 	ID3D11Buffer *GetBuffer() const { return mBuffer; }
-	ID3D11Buffer * const *GetBufferPointer() const { return &mBuffer.p; }
+	ID3D11Buffer * const *GetBufferPointer() const { return &mBuffer; }
 
 	ID3D11UnorderedAccessView *GetUnorderedAccess() const { return mUnorderedAccess; }
-	ID3D11UnorderedAccessView * const *GetUnorderedAccessPointer() const { return &mUnorderedAccess.p; }
+	ID3D11UnorderedAccessView * const *GetUnorderedAccessPointer() const { return &mUnorderedAccess; }
 
 	ID3D11ShaderResourceView *GetShaderResource() const { return mShaderResource; }
-	ID3D11ShaderResourceView * const *GetShaderResourcePointer() const { return &mShaderResource.p; }
+	ID3D11ShaderResourceView * const *GetShaderResourcePointer() const { return &mShaderResource; }
 
 	T *MapDiscard(ID3D11DeviceContext* d3dDeviceContext) const;
 	void Unmap(ID3D11DeviceContext* d3dDeviceContext) const;
 
 private:
 	int mElements;
-	CComPtr<ID3D11Buffer> mBuffer;
-	CComPtr<ID3D11ShaderResourceView> mShaderResource;
-	CComPtr<ID3D11UnorderedAccessView> mUnorderedAccess;
+	ComPtr<ID3D11Buffer> mBuffer;
+	ComPtr<ID3D11ShaderResourceView> mShaderResource;
+	ComPtr<ID3D11UnorderedAccessView> mUnorderedAccess;
 
 	DirectX11BufferHelper(const DirectX11BufferHelper&);
 	DirectX11BufferHelper& operator=(const DirectX11BufferHelper&);

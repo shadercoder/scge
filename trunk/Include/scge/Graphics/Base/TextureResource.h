@@ -8,7 +8,8 @@ class TextureResourceData : public FileResourceData
 public:
 	TextureResourceData(FileSystem &fileSystem) : FileResourceData(fileSystem) {}
 
-	virtual std::string getFactory() const { return "Texture"; }
+	virtual std::string getIdentifier() const final { return mFileName; }
+	virtual std::string getFactory() const final { return "Texture"; }
 };
 
 class TextureResource : public FileResource

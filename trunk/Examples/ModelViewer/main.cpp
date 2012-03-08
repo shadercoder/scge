@@ -4,6 +4,7 @@
 #include <scge/InputDevice.h>
 #include <scge/FileSystem.h>
 #include <scge/Timer.h>
+#include <scge/Assert.h>
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowSmd)
 {
@@ -87,6 +88,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				window.setMouseVisibility(false);
 			}
 		}
+
+		SCGE_ASSERT_MESSAGE(!input.IsKeyPress(Key::Y), "You Pressed Y!");
 
 		if(isMousePressed)
 		{

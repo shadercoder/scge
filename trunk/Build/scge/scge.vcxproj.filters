@@ -346,6 +346,7 @@
     <ClCompile Include="..\..\Source\MaterialResource.cpp">
       <Filter>Graphics\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Assert.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\..\Resources\DirectX11ComputeLighting.hlsl">

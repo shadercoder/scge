@@ -4,11 +4,12 @@
 #include "scge\Graphics\Renderer.h"
 #include "scge\ResourceManager\ResourceFactory.h"
 
+#include "scge\Graphics\DirectX11\DirectX11ComPtr.h"
+
 #include <unordered_map>
 #include <d3d11.h>
 #include <d3dx11.h>
 #include <d3dx10.h>
-#include <atlbase.h>
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -49,9 +50,9 @@ private:
 	ConsoleVariable<unsigned int> mRefreshRate;
 	ConsoleVariable<bool> mVSync;
 
-	CComPtr<ID3D11Device> mDevice;
-	CComPtr<ID3D11DeviceContext> mDeviceContext;
-	CComPtr<IDXGISwapChain> mSwapChain;
+	ComPtr<ID3D11Device> mDevice;
+	ComPtr<ID3D11DeviceContext> mDeviceContext;
+	ComPtr<IDXGISwapChain> mSwapChain;
 
 	ResourceFactory mTextureFactory;
 	ResourceFactory mMaterialFactory;

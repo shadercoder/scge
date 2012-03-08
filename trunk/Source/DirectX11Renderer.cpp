@@ -15,15 +15,15 @@
 
 bool QueryDisplayMode(bool windowed, unsigned int width, unsigned int height, int desiredRefreshRate, DXGI_MODE_DESC &chosenMode)
 {
-	CComPtr<IDXGIFactory1> factory;
+	ComPtr<IDXGIFactory1> factory;
 	if(FAILED(CreateDXGIFactory1(__uuidof(IDXGIFactory1), (void**)&factory)))
 		return true;
 
-	CComPtr<IDXGIAdapter> adapter;
+	ComPtr<IDXGIAdapter> adapter;
 	if(FAILED(factory->EnumAdapters(0, &adapter)))
 		return true;
 
-	CComPtr<IDXGIOutput> adapterOutput;
+	ComPtr<IDXGIOutput> adapterOutput;
 	if(FAILED(adapter->EnumOutputs(0, &adapterOutput)))
 		return true;
 
@@ -110,7 +110,7 @@ bool DirectX11Renderer::Initialise(WindowHandle windowHandle, bool windowed, uns
 	mRefreshRate.updateValue();
 	mVSync.updateValue();
 
-	CComPtr<IDXGIFactory1> factory;
+	ComPtr<IDXGIFactory1> factory;
 	if(FAILED(CreateDXGIFactory1(__uuidof(IDXGIFactory1), (void**)&factory)))
 		return true;
 

@@ -45,7 +45,7 @@ bool DirectX11VertexShader::Load()
 	std::wstring fileName;
 	fileName.assign(file.first.begin(), file.first.end());
 
-	CComPtr<ID3D10Blob> errorMessage;
+	ComPtr<ID3D10Blob> errorMessage;
 	if(FAILED(D3DX11CompileFromFile(fileName.c_str(), mResourceData->mShaderDefines, nullptr, mResourceData->mFunctionName.c_str(), "vs_5_0", shaderFlags, 0, nullptr, &mShaderBuffer, &errorMessage, nullptr)))
 	{
 		mResourceData->mConsole.threadSafePrintError(StringUtility::format("Failed to Compile Vertex Shader : %, function : %", mResourceData->mFileName, mResourceData->mFunctionName));
