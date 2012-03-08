@@ -4,7 +4,7 @@
 
 #include <filesystem>
 
-FileSystem::FileSystem(const std::string & resourceDirectory)
+FileSystem::FileSystem(std::string resourceDirectory)
 	: mResourceDirectory(resourceDirectory)
 {
 }

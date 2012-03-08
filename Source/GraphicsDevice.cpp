@@ -29,7 +29,7 @@ bool GraphicsDevice::Initialise(WindowHandle windowHandle, bool windowed, unsign
 	else
 #endif
 	{
-		mConsole.printError("Do not know API " + mRendererAPI.getValue());
+		mConsole.printError("Do not know Graphics API " + mRendererAPI.getValue());
 		return true;
 	}
 
