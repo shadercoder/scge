@@ -22,6 +22,8 @@ public:
 
 	virtual const MeshResource &getMesh(unsigned int meshNumber) const = 0;
 
+	virtual void Render() const = 0;
+
 	template <typename I>
 	class Interface : public FileResource::Interface<I>
 	{
@@ -31,6 +33,8 @@ public:
 		unsigned int numMeshes() const { return getResource().numMeshes(); }
 
 		const MeshResource &getMesh(unsigned int meshNumber) const { return getResource().getMesh(meshNumber); }
+
+		void Render() const { getResource().Render(); }
 	};
 };
 

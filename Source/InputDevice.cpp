@@ -277,7 +277,7 @@ void InputDevice::bindKey(const std::string &key, const std::string &command, bo
 	if(key.empty())
 		return;
 
-	if(key[0] == L'+' || key[0] == L'-')
+	if(key[0] == '+' || key[0] == '-')
 	{
 		std::string actualKey = key.substr(1, key.length()-1);
 		Key keyID = getKey(actualKey);
@@ -347,12 +347,15 @@ void InputDevice::unbindAll()
 	mKeyBindings.clear();
 }
 
-void InputDevice::registerConsoleEvent(ConsoleEvent &consoleEvent)
+bool InputDevice::registerConsoleEvent(ConsoleEvent &consoleEvent)
 {
-	mAllEvents.insert(EventBiMap::value_type(consoleEvent.getName(), &consoleEvent));
+	if(!mAllEvents.insert(EventBiMap::value_type(consoleEvent.getName(), &consoleEvent)).second)
+		return false;
 
 	for(auto & keybinding : mKeyBindings)
 		keybinding.second.onRegisterConsoleEvent(consoleEvent);
+
+	return true;
 }
 
 void InputDevice::unregisterConsoleEvent(ConsoleEvent &consoleEvent)

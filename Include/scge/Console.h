@@ -14,7 +14,7 @@
 #include <deque>
 #include <tuple>
 #include <queue>
-#include <boost\thread\mutex.hpp>
+#include <mutex>
 
 class Console
 {
@@ -65,7 +65,7 @@ private:
 	ConsoleVariable<size_t, true, true> mMaxCommandHistory;
 	std::deque<std::string> mCommandHistory;
 
-	boost::mutex mQueuedCommandsMutex;
+	std::mutex mQueuedCommandsMutex;
 	std::queue<std::tuple<bool, std::string, bool, bool>> mQueuedCommands;
 
 	ConsoleFunction mCommandPrint;

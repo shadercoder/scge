@@ -1,7 +1,8 @@
 #include "scge\Math\EulerAngles.h"
 
 #include "scge\Math\Vector3.h"
-#include "scge\Math\Matrix4.h"
+#include "scge\Math\Quaternion.h"
+#include "scge\Math\Matrix3.h"
 
 //-----------------------------------//
 
@@ -13,7 +14,7 @@ EulerAngles::EulerAngles()
 
 //-----------------------------------//
 
-EulerAngles::EulerAngles( float x, float y, float z )
+EulerAngles::EulerAngles(float x, float y, float z)
 	: x(x)
 	, y(y)
 	, z(z)
@@ -21,35 +22,48 @@ EulerAngles::EulerAngles( float x, float y, float z )
 
 //-----------------------------------//
 
-EulerAngles::EulerAngles( const EulerAngles& ang )
+EulerAngles::EulerAngles(const EulerAngles& ang)
 	: x(ang.x)
 	, y(ang.y)
 	, z(ang.z)
 { }
+
+//-----------------------------------//
 
 EulerAngles::EulerAngles(const Quaternion& quat)
 {
 	Vector3 forward = Vector3::UnitZ * quat;
 	Vector3 up = Vector3::UnitY * quat;
 
-	EulerAngles rotationaxes = PointAt(Vector3(0.0f), forward);
-
-	if(rotationaxes.x == Math::Constants::PiOverTwo)
+	*this = EulerAngles(Vector3(0.0f), forward);
+	
+	if(x == Math::Constants::PiOverTwo)
 	{
-		rotationaxes.y = Math::ArcTanAngle(up.z, up.x);
-		rotationaxes.z = 0;
+		y = Math::ArcTanAngle(up.z, up.x);
+		z = 0;
 	}
-	else if(rotationaxes.x == -Math::Constants::PiOverTwo)
+	else if(x == -Math::Constants::PiOverTwo)
 	{
-		rotationaxes.y = Math::ArcTanAngle(-up.z, -up.x);
-		rotationaxes.y = 0;
+		y = Math::ArcTanAngle(-up.z, -up.x);
+		y = 0;
 	}
 	else
 	{
-		up = up * Math::CreateRotationMatrixY(-rotationaxes.y);
-		up = up * Math::CreateRotationMatrixX(-rotationaxes.x);
-		rotationaxes.z = Math::ArcTanAngle(up.y, -up.x);
+		up = up * Math::CreateRotationMatrixY(-y);
+		up = up * Math::CreateRotationMatrixX(-x);
+		z = Math::ArcTanAngle(up.y, -up.x);
 	}
+}
+
+//-----------------------------------//
+
+EulerAngles::EulerAngles(const Vector3& from, const Vector3& location)
+{
+	Vector3 v = (location - from).Normalise();
+
+	x = Math::ASin(v.y);
+	y = Math::ArcTanAngle(-v.z, -v.x);
+	z = 0.0f;
 }
 
 //-----------------------------------//
@@ -98,16 +112,3 @@ EulerAngles EulerAngles::operator+(const EulerAngles& a) const
 }
 
 //-----------------------------------//
-
-EulerAngles EulerAngles::PointAt(const Vector3& from, const Vector3& location)
-{
-	EulerAngles ret;
-
-	Vector3 v = (location - from).Normalise();
-
-	ret.x = Math::ASin(v.y);
-	ret.y = Math::ArcTanAngle(-v.z, -v.x);
-	ret.z = 0.0f;
-
-	return ret;
-}

@@ -7,8 +7,9 @@ class InputDevice;
 class ConsoleEvent : public ConsoleCommand
 {
 public:
+static_assert(_MSC_VER == 1700, "Use variadic templates to allow multiple key to be passed in as default bindings");
 	ConsoleEvent(Console &console, InputDevice &inputDevice, std::string name);
-	~ConsoleEvent();
+	virtual ~ConsoleEvent();
 
 	virtual void parse(const std::vector<std::string> &arguments, bool silent) final;
 

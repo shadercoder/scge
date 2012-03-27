@@ -1,8 +1,10 @@
 #include "scge\ResourceManager.h"
 
+#include <thread>
+
 ResourceManager::ResourceManager(Console& console)
 	: mConsole(console)
-	, mNumberOfThreads(console, "ResourceManager.NumThreads", "Number of threads used for loading resources", 0u, std::max(boost::thread::hardware_concurrency(), 1u) - 1u, std::max(boost::thread::hardware_concurrency(), 1u) - 1u)
+	, mNumberOfThreads(console, "ResourceManager.NumThreads", "Number of threads used for loading resources", 0u, std::max(std::thread::hardware_concurrency(), 1u) - 1u, std::max(std::thread::hardware_concurrency(), 1u) - 1u)
 	, mThreadPool(mNumberOfThreads.getValue())
 {
 }

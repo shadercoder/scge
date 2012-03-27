@@ -8,8 +8,7 @@
 Plane::Plane()
 	: normal()
 	, offset()
-{
-}
+{ }
 
 //-----------------------------------//
 
@@ -86,14 +85,8 @@ bool Plane::intersects(const Ray& ray, float& distance) const
 
 void Plane::normalise()
 {
-	float magnitude = normal.length();
+	float magnitude = normal.Normalise();
 
-	// Normalize the normal.
-	normal.x /= magnitude;
-	normal.y /= magnitude;
-	normal.z /= magnitude;
-
-	// We also need to divide the offset.
 	offset /= magnitude;
 }
 

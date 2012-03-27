@@ -1,7 +1,7 @@
 #ifndef DIRECTX11COMPTR_H_
 #define DIRECTX11COMPTR_H_
 
-#include "scge\Assert.h"
+#include "scge\Warning.h"
 
 template <class T>
 class ComPtr
@@ -13,6 +13,12 @@ public:
 
 	ComPtr(T* pointer)
 		: mPointer(pointer)
+	{
+		if(mPointer) mPointer->AddRef();
+	}
+
+	ComPtr(const ComPtr<T> &pointer)
+		: mPointer(pointer.mPointer)
 	{
 		if(mPointer) mPointer->AddRef();
 	}
@@ -31,7 +37,7 @@ public:
 		return *this;
 	}
 
-	ComPtr& operator=(ComPtr<T> pointer)
+	ComPtr& operator=(const ComPtr<T> &pointer)
 	{
 		if(mPointer) mPointer->Release();
 		mPointer = pointer.mPointer;
@@ -57,11 +63,6 @@ public:
 		return mPointer;
 	}
 
-	operator T*const *() const
-	{
-		return &mPointer;
-	}
-
 	T& operator*()
 	{
 		SCGE_ASSERT(mPointer != nullptr);
@@ -74,9 +75,9 @@ public:
 		return *mPointer;
 	}
 
-	T** operator&()
+	T** getModifieablePointer()
 	{
-		SCGE_ASSERT_MESSAGE(mPointer == nullptr, "Returning a pointer to the pointer is unsafe if it is set as it may be changed without being released");
+		SCGE_ASSERT_MESSAGE(mPointer == nullptr, "Returning the raw pointer is unsafe as it may be changed without being released");
 		return &mPointer;
 	}
 
@@ -116,4 +117,4 @@ private:
 	T* mPointer;
 };
 
-#endif /* DIRECTX11COMPTR_H_ */
+#endif // DIRECTX11COMPTR_H_

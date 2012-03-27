@@ -11,7 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Include\scge\Assert.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\DirectX11\DirectX11Material.h" />
+    <ClInclude Include="..\..\Include\scge\Graphics\PointLight.h" />
+    <ClInclude Include="..\..\Include\scge\Warning.h" />
     <ClInclude Include="..\..\Include\scge\AudioDevice.h" />
     <ClInclude Include="..\..\Include\scge\AudioDevice\SoundResource.h" />
     <ClInclude Include="..\..\Include\scge\Config.h" />
@@ -74,7 +76,9 @@
     <ClInclude Include="..\..\Resources\DirectX11SharedDefines.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\Assert.cpp" />
+    <ClCompile Include="..\..\Source\DirectX11Material.cpp" />
+    <ClCompile Include="..\..\Source\PointLight.cpp" />
+    <ClCompile Include="..\..\Source\Warning.cpp" />
     <ClCompile Include="..\..\Source\AudioDevice.cpp" />
     <ClCompile Include="..\..\Source\BoundingBox.cpp" />
     <ClCompile Include="..\..\Source\BoundingSphere.cpp" />
@@ -186,6 +190,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(SolutionDir)\..\Include;$(BOOST_ROOT);$(BOOST_THREADPOOL_ROOT);$(DIRECTX_ROOT)\include;$(FMOD_ROOT)\inc;$(IncludePath)</IncludePath>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir)\..\Include;$(BOOST_ROOT);$(BOOST_THREADPOOL_ROOT);$(DIRECTX_ROOT)\include;$(FMOD_ROOT)\inc;$(IncludePath)</IncludePath>

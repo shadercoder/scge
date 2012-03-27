@@ -6,7 +6,6 @@
 
 #include <functional>
 #include <type_traits>
-#include <boost/format.hpp>
 
 template <typename VariableType, bool useMinMax>
 class ConsoleVariableMinMax

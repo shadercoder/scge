@@ -3,6 +3,8 @@
 #include "scge\Math\Ray.h"
 #include "scge\Math\Matrix4.h"
 
+#include "scge\Warning.h"
+
 //-----------------------------------//
 
 BoundingBox::BoundingBox()
@@ -64,12 +66,13 @@ void BoundingBox::add(const Vector3& v)
 
 void BoundingBox::add(const BoundingBox& box)
 {
-	if( box.min.x < min.x ) min.x = box.min.x;
-	if( box.max.x > max.x ) max.x = box.max.x;
-	if( box.min.y < min.y ) min.y = box.min.y;
-	if( box.max.y > max.y ) max.y = box.max.y;
-	if( box.min.z < min.z ) min.z = box.min.z;
-	if( box.max.z > max.z ) max.z = box.max.z;
+	min.x = std::min(min.x, box.min.x);
+	min.y = std::min(min.y, box.min.y);
+	min.z = std::min(min.z, box.min.z);
+
+	max.x = std::max(max.x, box.max.x);
+	max.y = std::max(max.y, box.max.y);
+	max.z = std::max(max.z, box.max.z);
 }
 
 //-----------------------------------//
@@ -92,23 +95,21 @@ BoundingBox BoundingBox::transform(const Matrix4& mat) const
 
 Vector3 BoundingBox::getCorner(int i) const
 {
+	SCGE_ASSERT(i >= 0 && i <= 8);
 	return Vector3(
 		(i & 1) ? max.x : min.x,
 		(i & 2) ? max.y : min.y,
-		(i & 4) ? max.z : min.z );
+		(i & 4) ? max.z : min.z);
 }
 
 //-----------------------------------//
 
 Vector3 BoundingBox::getCenter() const
 {
-	return (min + max) * 0.5;
+	return (min + max) * 0.5f;
 }
 
 //-----------------------------------//
-
-// From "Fast Ray-Box Intersection," by Woo in Graphics Gems I,
-// page 395.
 
 bool BoundingBox::intersects(const Ray& ray, float& distance) const
 {

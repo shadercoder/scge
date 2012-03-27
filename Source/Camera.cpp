@@ -1,6 +1,9 @@
 #include "scge\Math\Camera.h"
 
 #include "scge\Math\Matrix3.h"
+#include "scge\Math\Matrix4.h"
+
+//-----------------------------------//
 
 Camera::Camera()
 	: mPosition(Vector3::Zero)
@@ -9,6 +12,8 @@ Camera::Camera()
 	, mLook(Vector3::UnitZ)
 {
 }
+
+//-----------------------------------//
 
 Matrix4 Camera::getViewMatrix()
 {
@@ -49,20 +54,28 @@ Matrix4 Camera::getViewMatrix()
 	return ret;
 }
 
+//-----------------------------------//
+
 void Camera::moveX(float dis)
 {
 	mPosition -= Vector3(mLook.x, 0.0f, mLook.z).CreateNormalised() * dis;
 }
+
+//-----------------------------------//
 
 void Camera::moveY(float dis)
 {
 	mPosition.y -= dis;
 }
 
+//-----------------------------------//
+
 void Camera::moveZ(float dis)
 {
 	mPosition -= Vector3(mRight.x, 0.0f, mRight.z).CreateNormalised() * dis;
 }
+
+//-----------------------------------//
 
 void Camera::rotateX(float angle)
 {
@@ -72,6 +85,8 @@ void Camera::rotateX(float angle)
 	mLook = mLook * mat;
 }
 
+//-----------------------------------//
+
 void Camera::rotateY(float angle)
 {
 	Matrix3 mat(Vector3::UnitY, -angle);
@@ -79,3 +94,5 @@ void Camera::rotateY(float angle)
 	mRight = mRight * mat;
 	mLook = mLook * mat;
 }
+
+//-----------------------------------//

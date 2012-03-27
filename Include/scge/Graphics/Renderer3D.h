@@ -1,11 +1,13 @@
 #ifndef __Renderer3D_h__
 #define __Renderer3D_h__
 
-#include "scge\Console.h"
-#include "scge\ResourceManager.h"
 #include "scge\Math\Camera.h"
 #include "scge\Graphics\Base\TextureResource.h"
+#include "scge\ResourceManager\ResourceReference.h"
 
+class Console;
+class ResourceManager;
+class PointLight;
 class Renderer3D
 {
 public:
@@ -20,16 +22,17 @@ public:
 	const Camera &getCamera() const { return mCamera; }
 	void setCamera(const Camera &camera) { mCamera = camera; }
 
-	const ResourceReference<TextureResource> &getSkybox() const { return mSkyboxTexture; }
-	void setSkybox(const ResourceReference<TextureResource> &skyboxTexture) { mSkyboxTexture = skyboxTexture; }
+	virtual ResourceReference<TextureResource> getSkybox() const = 0;
+	virtual void setSkybox(const ResourceReference<TextureResource> &skyboxTexture) = 0;
+
+	virtual void registerPointLight(PointLight &pointLight) = 0;
+	virtual void unRegisterPointLight(PointLight &pointLight) = 0;
 
 protected:
 	Console &mConsole;
 	ResourceManager &mResourceManager;
 
 	Camera mCamera;
-
-	ResourceReference<TextureResource> mSkyboxTexture;
 
 private:
 	Renderer3D(const Renderer3D &);

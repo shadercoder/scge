@@ -163,7 +163,6 @@ public:
 		return Vector3T<T>(-x, -y, -z);
 	}
 
-	template <typename T>
 	inline friend Vector3T<T> operator*(const T fScalar, const Vector3T<T>& rkVector)
 	{
 		return Vector3T<T>(
@@ -172,7 +171,6 @@ public:
 			fScalar * rkVector.z);
 	}
 
-	template <typename T>
 	inline friend Vector3T<T> operator/(const T fScalar, const Vector3T<T>& rkVector)
 	{
 		return Vector3T<T>(
@@ -181,7 +179,6 @@ public:
 			fScalar / rkVector.z);
 	}
 
-	template <typename T>
 	inline friend Vector3T<T> operator+(const Vector3T<T>& lhs, const T rhs)
 	{
 		return Vector3T<T>(
@@ -190,7 +187,6 @@ public:
 			lhs.z + rhs);
 	}
 
-	template <typename T>
 	inline friend Vector3T<T> operator+(const T lhs, const Vector3T<T>& rhs)
 	{
 		return Vector3T<T>(
@@ -199,7 +195,6 @@ public:
 			lhs + rhs.z);
 	}
 
-	template <typename T>
 	inline friend Vector3T<T> operator-(const Vector3T<T>& lhs, const T rhs)
 	{
 		return Vector3T<T>(
@@ -208,7 +203,6 @@ public:
 			lhs.z - rhs);
 	}
 
-	template <typename T>
 	inline friend Vector3T<T> operator-(const T lhs, const Vector3T<T>& rhs)
 	{
 		return Vector3T<T>(
@@ -557,7 +551,7 @@ public:
 
 		// Rotate up vector by random amount around this
 		Quaternion q;
-		q.FromAngleAxis(Math::UnitRandom() * Math::TwoPi, *this);
+		q.FromAngleAxis(Math::UnitRandom() * Math::Constants::TwoPi, *this);
 		newUp = q * newUp;
 
 		// Finally rotate this by given angle around randomised up
@@ -579,7 +573,7 @@ public:
 
 		T f = dotProduct(dest) / lenProduct;
 
-		f = Math::Clamp(f, -1.0, 1.0);
+		f = Math::clamp(f, -1.0, 1.0);
 
 		return Math::ACos(f);
 
@@ -614,16 +608,16 @@ public:
 			if (fallbackAxis != Vector3T<T>())
 			{
 				// rotate 180 degrees about the fallback axis
-				q.FromAngleAxis(Radian(Math::Pi), fallbackAxis);
+				q.FromAngleAxis(Math::Constants::Pi, fallbackAxis);
 			}
 			else
 			{
 				// Generate an axis
-				Vector3T<T> axis = UNIT_X.crossProduct(*this);
+				Vector3T<T> axis = UnitX.crossProduct(*this);
 				if (axis.isZeroLength()) // pick another if colinear
-					axis = UNIT_Y.crossProduct(*this);
+					axis = UnitY.crossProduct(*this);
 				axis.Normalise();
-				q.FromAngleAxis(Radian(Math::Pi), axis);
+				q.FromAngleAxis(Math::Constants::Pi, axis);
 			}
 		}
 		else
@@ -726,7 +720,6 @@ public:
 
 	/** Function for writing to a stream.
 	*/
-	template <typename T>
 	inline friend std::ostream& operator<<(std::ostream& o, const Vector3T<T>& v)
 	{
 		o << "Vector3(" << v.x << ", " << v.y << ", " << v.z << ")";

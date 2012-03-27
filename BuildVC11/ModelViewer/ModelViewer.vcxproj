@@ -46,6 +46,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(BOOST_ROOT);$(BOOST_THREADPOOL_ROOT);$(DIRECTX_ROOT)\include;$(FMOD_ROOT)\inc;$(IncludePath)</IncludePath>
     <LibraryPath>$(BOOST_ROOT)\lib;$(DIRECTX_ROOT)\Lib\x86;$(FMOD_ROOT)\lib;$(LibraryPath)</LibraryPath>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>

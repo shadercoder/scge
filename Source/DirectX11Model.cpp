@@ -1,12 +1,15 @@
 #include "scge\Graphics\DirectX11\DirectX11Model.h"
 
+#include "scge\Graphics\DirectX11\DirectX11Renderer3D.h"
+
 #include <fstream>
 #include <algorithm>
 
-DirectX11ModelData::DirectX11ModelData(ID3D11Device *d3d11Device, Console &console, ResourceManager &resourceManager, FileSystem &fileSystem, bool multiThreadLoad, const std::string &arguments)
+DirectX11ModelData::DirectX11ModelData(ID3D11Device *d3d11Device, DirectX11Renderer3D &directX11Renderer3D, Console &console, ResourceManager &resourceManager, FileSystem &fileSystem, bool multiThreadLoad, const std::string &arguments)
 	: ModelResourceData(fileSystem)
 	, mConsole(console)
 	, mD3D11Device(d3d11Device)
+	, mDirectX11Renderer3D(directX11Renderer3D)
 	, mResourceManager(resourceManager)
 	, mMultiThreadLoad(multiThreadLoad)
 {
@@ -85,10 +88,15 @@ void DirectX11Model::Release()
 	mMeshs.clear();
 }
 
-void DirectX11Model::Render(ID3D11DeviceContext* deviceContext) const
+void DirectX11Model::Render() const
+{
+	mResourceData->mDirectX11Renderer3D.addModelToQueue(this);
+}
+
+void DirectX11Model::Render(ID3D11DeviceContext* deviceContext, bool alphaTestPass) const
 {
 	for(auto & mesh : mMeshs)
-		mesh->Render(deviceContext);
+		mesh->Render(deviceContext, alphaTestPass);
 }
 
 ResourceStatus DirectX11Model::getResourceStatus() const

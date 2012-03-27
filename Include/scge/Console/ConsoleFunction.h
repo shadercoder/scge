@@ -5,8 +5,6 @@
 
 #include <functional>
 
-static_assert(_MSC_VER == 1700, "Look into templating this so that proper functions can be added and as it knows the values it can parse them all and pass them properly into the function");
-
 class ConsoleFunction: public ConsoleCommand
 {
 public:

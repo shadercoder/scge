@@ -3,6 +3,10 @@
 
 #include <map>
 #include <fstream>
+#include <memory>
+
+#include <boost\bimap.hpp>
+#include <boost\bimap\unordered_set_of.hpp>
 
 class Resource;
 class FileSystem
@@ -22,9 +26,13 @@ public:
 	void UnregisterForFileChanges(Resource &resource);
 
 private:
-	std::map<Resource*, std::pair<std::string, std::string>> mResourceToFile;
-
 	std::string mResourceDirectory;
+
+	typedef boost::bimap<boost::bimaps::unordered_set_of<std::string>, boost::bimaps::set_of<Resource*>> ResourceFileAssociations;
+	ResourceFileAssociations mResourceFileAssociations;
+
+	class DirectoryWatcher;
+	std::unique_ptr<DirectoryWatcher> mDirectoryWatcher;
 
 	FileSystem(const FileSystem &other);
 	FileSystem &operator=(const FileSystem &other);

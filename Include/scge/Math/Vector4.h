@@ -211,7 +211,6 @@ public:
 		return Vector4T<T>(-x, -y, -z, -w);
 	}
 
-	template <typename T>
 	inline friend Vector4T<T> operator*(const T fScalar, const Vector4T<T>& rkVector)
 	{
 		return Vector4T<T>(
@@ -221,7 +220,6 @@ public:
 			fScalar * rkVector.w);
 	}
 
-	template <typename T>
 	inline friend Vector4T<T> operator/(const T fScalar, const Vector4T<T>& rkVector)
 	{
 		return Vector4T<T>(
@@ -240,7 +238,6 @@ public:
 			lhs.w + rhs);
 	}
 
-	template <typename T>
 	inline friend Vector4T<T> operator+(const T lhs, const Vector4T<T>& rhs)
 	{
 		return Vector4T<T>(
@@ -250,7 +247,6 @@ public:
 			lhs + rhs.w);
 	}
 
-	template <typename T>
 	inline friend Vector4T<T> operator-(const Vector4T<T>& lhs, T rhs)
 	{
 		return Vector4T<T>(
@@ -260,7 +256,6 @@ public:
 			lhs.w - rhs);
 	}
 
-	template <typename T>
 	inline friend Vector4T<T> operator-(const T lhs, const Vector4T<T>& rhs)
 	{
 		return Vector4T<T>(

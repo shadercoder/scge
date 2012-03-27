@@ -68,7 +68,7 @@ private:
 
 	void CreateShaderDefines();
 	std::unordered_map<std::string, std::string> mShaderDefineStrings;
-	std::unique_ptr<D3D10_SHADER_MACRO[]> mShaderDefines;
+	std::vector<D3D10_SHADER_MACRO> mShaderDefines;
 };
 
 #endif // __DirectX11Renderer_h__

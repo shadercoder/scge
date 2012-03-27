@@ -12,22 +12,22 @@ BoundingSphere::BoundingSphere()
 //-----------------------------------//
 
 BoundingSphere::BoundingSphere(const Vector3& center, float radius)
-	: center( center )
-	, radius( radius )
+	: center(center)
+	, radius(radius)
 { }
 
 //-----------------------------------//
 
 BoundingSphere::BoundingSphere(const BoundingSphere& bs)
-	: center( bs.center )
-	, radius( bs.radius )
+	: center(bs.center)
+	, radius(bs.radius)
 { }
 
 //-----------------------------------//
 
 BoundingSphere::BoundingSphere(const BoundingBox& box)
-	: center( box.getCenter() )
-	, radius( (box.getCenter() - box.max.x).length() )
+	: center(box.getCenter())
+	, radius((box.getCenter() - box.max.x).length())
 { }
 
 //-----------------------------------//
@@ -37,14 +37,6 @@ void BoundingSphere::add(const Vector3& vertex)
 	float dist = center.distance(vertex);
 	if(dist > radius)
 		radius = dist;
-}
-
-//-----------------------------------//
-
-bool BoundingSphere::intersects(const Ray& ray, float& distance) const
-{
-	//TODO : implement
-	return false;
 }
 
 //-----------------------------------//

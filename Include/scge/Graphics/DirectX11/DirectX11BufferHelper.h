@@ -69,7 +69,7 @@ bool DirectX11BufferHelper<T>::Initialise(ID3D11Device* d3dDevice)
 	mElements = 0;
 
 	CD3D11_BUFFER_DESC desc(CBSize(sizeof(T)), D3D11_BIND_CONSTANT_BUFFER, D3D11_USAGE_DYNAMIC, D3D11_CPU_ACCESS_WRITE);
-	if(FAILED(d3dDevice->CreateBuffer(&desc, 0, &mBuffer)))
+	if(FAILED(d3dDevice->CreateBuffer(&desc, 0, mBuffer.getModifieablePointer())))
 		return true;
 
 	return false;
@@ -86,24 +86,24 @@ bool DirectX11BufferHelper<T>::Initialise(ID3D11Device* d3dDevice, int elements,
 	{
 		D3D11_SUBRESOURCE_DATA data = {0};
 		data.pSysMem = initialValues;
-		if(FAILED(d3dDevice->CreateBuffer(&desc, &data, &mBuffer)))
+		if(FAILED(d3dDevice->CreateBuffer(&desc, &data, mBuffer.getModifieablePointer())))
 			return true;
 	}
 	else
 	{
-		if(FAILED(d3dDevice->CreateBuffer(&desc, 0, &mBuffer)))
+		if(FAILED(d3dDevice->CreateBuffer(&desc, 0, mBuffer.getModifieablePointer())))
 			return true;
 	}
 
 	if(bindFlags & D3D11_BIND_UNORDERED_ACCESS)
 	{
-		if(FAILED(d3dDevice->CreateUnorderedAccessView(mBuffer, 0, &mUnorderedAccess)))
+		if(FAILED(d3dDevice->CreateUnorderedAccessView(mBuffer, 0, mUnorderedAccess.getModifieablePointer())))
 			return true;
 	}
 
 	if(bindFlags & D3D11_BIND_SHADER_RESOURCE)
 	{
-		if(FAILED(d3dDevice->CreateShaderResourceView(mBuffer, 0, &mShaderResource)))
+		if(FAILED(d3dDevice->CreateShaderResourceView(mBuffer, 0, mShaderResource.getModifieablePointer())))
 			return true;
 	}
 

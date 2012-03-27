@@ -2,27 +2,28 @@
 
 //-----------------------------------//
 
-Ray::Ray() {}
-
-//-----------------------------------//
-
-Ray::Ray( const Vector3& origin, const Vector3& direction ) 
-	: origin( origin )
-	, direction( direction )
+Ray::Ray()
 { }
 
 //-----------------------------------//
 
-Ray::Ray( const Ray& ray )
-	: origin( ray.origin )
-	, direction( ray.direction )
+Ray::Ray(const Vector3& origin, const Vector3& direction) 
+	: origin(origin)
+	, direction(direction)
+{ }
+
+//-----------------------------------//
+
+Ray::Ray(const Ray& ray)
+	: origin(ray.origin)
+	, direction(ray.direction)
 { }
 
 //-----------------------------------//
 
 Vector3 Ray::getPoint(float distance) const
 {
-	return origin + direction*distance;
+	return origin + (direction*distance);
 }
 
 //-----------------------------------//
