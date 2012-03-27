@@ -45,7 +45,7 @@ public:
 
 		RemoveReference();
 		mResource = std::dynamic_pointer_cast<T>(other.mResource);
-		mInterface = T::Interface(mResource.get());
+		mInterface = typename T::Interface<T>(mResource.get());
 		AddReference();
 
 		return *this;

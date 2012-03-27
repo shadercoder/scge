@@ -11,10 +11,7 @@ ConsoleEvent::ConsoleEvent(Console &console, InputDevice &inputDevice, std::stri
 	, mEventUp(false)
 {
 	if(initialise(console))
-	{
-		mInputDevice.registerConsoleEvent(*this);
-		mRegisteredForInput = true;
-	}
+		mRegisteredForInput = mInputDevice.registerConsoleEvent(*this);
 }
 
 ConsoleEvent::~ConsoleEvent()

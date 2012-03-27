@@ -11,14 +11,16 @@
 #include <d3dx11.h>
 #include <vector>
 
+class DirectX11Renderer3D;
 class DirectX11ModelData : public ModelResourceData
 {
 public:
-	DirectX11ModelData(ID3D11Device *d3d11Device, Console &console, ResourceManager &resourceManager, FileSystem &fileSystem, bool multiThreadLoad, const std::string &arguments);
+	DirectX11ModelData(ID3D11Device *d3d11Device, DirectX11Renderer3D &directX11Renderer3D, Console &console, ResourceManager &resourceManager, FileSystem &fileSystem, bool multiThreadLoad, const std::string &arguments);
 
 	virtual std::shared_ptr<Resource> createResource() const final;
 
 	ID3D11Device *mD3D11Device;
+	DirectX11Renderer3D &mDirectX11Renderer3D;
 	ResourceManager &mResourceManager;
 	Console &mConsole;
 
@@ -40,15 +42,14 @@ public:
 
 	virtual const MeshResource &getMesh(unsigned int meshNumber) const final { return *mMeshs[meshNumber].get(); }
 
-	void Render(ID3D11DeviceContext* deviceContext) const;
+	virtual void Render() const final;
+	void Render(ID3D11DeviceContext* deviceContext, bool alphaTestPass) const;
 
 	template <typename I>
 	class Interface : public ModelResource::Interface<I>
 	{
 	public:
 		Interface(I *fileResource) : ModelResource::Interface<I>(fileResource) {}
-
-		void Render(ID3D11DeviceContext* deviceContext) const { getResource().Render(deviceContext); }
 	};
 
 private:

@@ -2,7 +2,7 @@
 #define DirectX11Mesh_h__
 
 #include "scge\ResourceManager.h"
-#include "scge\Graphics\Resources\MaterialResource.h"
+#include "scge\Graphics\DirectX11\DirectX11Material.h"
 #include "scge\Graphics\Base\MeshResource.h"
 #include "scge\Graphics\DirectX11\DirectX11BufferHelper.h"
 #include "scge\Console.h"
@@ -29,7 +29,7 @@ public:
 
 	ResourceStatus getResourceStatus() const;
 
-	void Render(ID3D11DeviceContext* deviceContext) const;
+	void Render(ID3D11DeviceContext* deviceContext, bool alphaTestPass) const;
 
 	virtual ResourceReference<MaterialResource> getMaterial() const { return mMaterial; }
 
@@ -49,7 +49,7 @@ private:
 	Console &mConsole;
 
 	std::string mMaterialName;
-	ResourceReference<MaterialResource> mMaterial;
+	ResourceReference<DirectX11MaterialResource> mMaterial;
 	
 	DirectX11BufferHelper<VertexType> mVertexBuffer;
 

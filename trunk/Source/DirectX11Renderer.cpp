@@ -6,7 +6,7 @@
 #include "scge\Utility.h"
 
 #include "scge\Graphics\DirectX11\DirectX11Texture.h"
-#include "scge\Graphics\Resources\MaterialResource.h"
+#include "scge\Graphics\DirectX11\DirectX11Material.h"
 #include "scge\Graphics\DirectX11\DirectX11Model.h"
 #include "scge\Graphics\DirectX11\DirectX11Font.h"
 #include "scge\Graphics\DirectX11\DirectX11VertexShader.h"
@@ -20,11 +20,11 @@ bool QueryDisplayMode(bool windowed, unsigned int width, unsigned int height, in
 		return true;
 
 	ComPtr<IDXGIAdapter> adapter;
-	if(FAILED(factory->EnumAdapters(0, &adapter)))
+	if(FAILED(factory->EnumAdapters(0, adapter.getModifieablePointer())))
 		return true;
 
 	ComPtr<IDXGIOutput> adapterOutput;
-	if(FAILED(adapter->EnumOutputs(0, &adapterOutput)))
+	if(FAILED(adapter->EnumOutputs(0, adapterOutput.getModifieablePointer())))
 		return true;
 
 	unsigned int numModes = 0;
@@ -142,7 +142,7 @@ bool DirectX11Renderer::Initialise(WindowHandle windowHandle, bool windowed, uns
 	flags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-	if(FAILED(D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, flags, &featureLevel, 1, D3D11_SDK_VERSION, &swapChainDesc, &mSwapChain, &mDevice, nullptr, &mDeviceContext)))
+	if(FAILED(D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, flags, &featureLevel, 1, D3D11_SDK_VERSION, &swapChainDesc, mSwapChain.getModifieablePointer(), mDevice.getModifieablePointer(), nullptr, mDeviceContext.getModifieablePointer())))
 	{
 		mConsole.printError("D3D11CreateDeviceAndSwapChain() failed");
 		return true;
@@ -162,12 +162,12 @@ bool DirectX11Renderer::Initialise(WindowHandle windowHandle, bool windowed, uns
 		return true;
 
 	if(mMaterialFactory.Initialise([this](const std::string &arguments){
-		return std::unique_ptr<ResourceData>(new MaterialResourceData(mResourceManager, mFileSystem, arguments));
+		return std::unique_ptr<ResourceData>(new DirectX11MaterialData(mConsole, mResourceManager, mFileSystem, arguments));
 	}))
 		return true;
 
 	if(mModelFactory.Initialise([this, multiThreadLoad](const std::string &arguments){
-		return std::unique_ptr<ResourceData>(new DirectX11ModelData(mDevice, mConsole, mResourceManager, mFileSystem, multiThreadLoad, arguments));
+		return std::unique_ptr<ResourceData>(new DirectX11ModelData(mDevice, *mRenderer3D, mConsole, mResourceManager, mFileSystem, multiThreadLoad, arguments));
 	}))
 		return true;
 
@@ -177,17 +177,17 @@ bool DirectX11Renderer::Initialise(WindowHandle windowHandle, bool windowed, uns
 		return true;
 
 	if(mVertexShaderFactory.Initialise([this, multiThreadLoad](const std::string &arguments){
-		return std::unique_ptr<ResourceData>(new DirectX11VertexShaderData(mDevice, mShaderDefines.get(), mConsole, mFileSystem, multiThreadLoad, arguments));
+		return std::unique_ptr<ResourceData>(new DirectX11VertexShaderData(mDevice, mShaderDefines.data(), mConsole, mFileSystem, multiThreadLoad, arguments));
 	}))
 		return true;
 
 	if(mPixelShaderFactory.Initialise([this, multiThreadLoad](const std::string &arguments){
-		return std::unique_ptr<ResourceData>(new DirectX11PixelShaderData(mDevice, mShaderDefines.get(), mConsole, mFileSystem, multiThreadLoad, arguments));
+		return std::unique_ptr<ResourceData>(new DirectX11PixelShaderData(mDevice, mShaderDefines.data(), mConsole, mFileSystem, multiThreadLoad, arguments));
 	}))
 		return true;
 
 	if(mComputeShaderFactory.Initialise([this, multiThreadLoad](const std::string &arguments){
-		return std::unique_ptr<ResourceData>(new DirectX11ComputeShaderData(mDevice, mShaderDefines.get(), mConsole, mFileSystem, multiThreadLoad, arguments));
+		return std::unique_ptr<ResourceData>(new DirectX11ComputeShaderData(mDevice, mShaderDefines.data(), mConsole, mFileSystem, multiThreadLoad, arguments));
 	}))
 		return true;
 
@@ -237,7 +237,7 @@ bool DirectX11Renderer::onInitialiseSwapChain()
 	if(mRenderer3D->onInitialiseSwapChain(mSwapChain, mWindowed, mWidth, mHeight))
 		return true;
 
-	CD3D11_VIEWPORT viewport(0.0f, 0.0f, (float)mWidth, (float)mHeight);
+	CD3D11_VIEWPORT viewport(0.0f, 0.0f, static_cast<float>(mWidth), static_cast<float>(mHeight));
 	mDeviceContext->RSSetViewports(1, &viewport);
 
 	return false;
@@ -304,10 +304,6 @@ bool DirectX11Renderer::onResize(bool windowed, int width, int height)
 			return true;
 		}
 
-		newMode.RefreshRate.Numerator = 0;
-		newMode.RefreshRate.Denominator = 1;
-		mSwapChain->ResizeTarget(&newMode);
-
 		mWindowed = windowed;
 	}
 
@@ -328,34 +324,29 @@ bool DirectX11Renderer::onResize(bool windowed, int width, int height)
 
 Renderer2D &DirectX11Renderer::getRenderer2D() const
 {
+	SCGE_ASSERT(mRenderer2D);
 	return *(mRenderer2D.get());
 }
 
 Renderer3D &DirectX11Renderer::getRenderer3D() const
 {
+	SCGE_ASSERT(mRenderer3D);
 	return *(mRenderer3D.get());
-}
-
-template <typename T>
-inline std::string createDefine(T value)
-{
-	return StringUtility::toString(value);
 }
 
 void DirectX11Renderer::CreateShaderDefines()
 {
 	mShaderDefineStrings.clear();
-	mShaderDefineStrings["MSAA_SAMPLES"] = createDefine(mMultiSampleLevel.getValue());
+	mShaderDefineStrings["MSAA_SAMPLES"] = StringUtility::toString(mMultiSampleLevel.getValue());
 
-	mShaderDefines.reset(new D3D10_SHADER_MACRO[mShaderDefineStrings.size() + 1]);
-	unsigned int i = 0;
+	mShaderDefines.clear();
+	mShaderDefines.reserve(mShaderDefineStrings.size() + 1);
 	for(auto & shaderDefineString : mShaderDefineStrings)
 	{
-		mShaderDefines[i].Name = shaderDefineString.first.c_str();
-		mShaderDefines[i].Definition = shaderDefineString.second.c_str();
-		++i;
+		D3D10_SHADER_MACRO define = { shaderDefineString.first.c_str(), shaderDefineString.second.c_str() };
+		mShaderDefines.push_back(define);
 	}
 
-	mShaderDefines[i].Name = 0;
-	mShaderDefines[i].Definition = 0;
+	D3D10_SHADER_MACRO define = { nullptr, nullptr };
+	mShaderDefines.push_back(define);
 }

@@ -8,6 +8,7 @@
 #include "scge\Graphics\DirectX11\DirectX11VertexShader.h"
 #include "scge\Graphics\DirectX11\DirectX11PixelShader.h"
 #include "scge\Graphics\DirectX11\DirectX11Model.h"
+#include "scge\Graphics\DirectX11\DirectX11Texture.h"
 
 #include "scge\Graphics\DirectX11\DirectX11Depth2DHelper.h"
 #include "scge\Graphics\DirectX11\DirectX11Texture2DHelper.h"
@@ -28,6 +29,14 @@ public:
 	void onReleaseSwapChain();
 
 	bool Render();
+
+	virtual void registerPointLight(PointLight &pointLight);
+	virtual void unRegisterPointLight(PointLight &pointLight);
+
+	virtual ResourceReference<TextureResource> getSkybox() const final { return mSkyboxTexture; }
+	virtual void setSkybox(const ResourceReference<TextureResource> &skyboxTexture) final { mSkyboxTexture = skyboxTexture; }
+
+	void addModelToQueue(const DirectX11Model* model);
 
 private:
 	ID3D11Device *mDevice;
@@ -52,9 +61,6 @@ private:
 	ResourceReference<DirectX11VertexShader> mFinalPassVS;
 	ResourceReference<DirectX11PixelShader> mFinalPassPSColour;
 	ResourceReference<DirectX11PixelShader> mFinalPassPSSkybox;
-
-	std::vector<ResourceReference<DirectX11Model>> mOpaqueModels;
-	std::vector<ResourceReference<DirectX11Model>> mAlphaTestModels;
 
 	void SetupViewProjection();
 	Matrix4 mView;
@@ -94,15 +100,17 @@ private:
 
 	bool CreateLightBuffer();
 	void SetupLights();
-	struct PointLight
+	struct BufferedPointLight
 	{
 		Vector3 mPositionView;
 		float mAttenuationBegin;
 		Vector3 mColour;
 		float mAttenuationEnd;
 	};
-	DirectX11BufferHelper<PointLight> mLightBuffer;
-	std::vector<PointLight> mLightProperties;
+	DirectX11BufferHelper<BufferedPointLight> mLightBuffer;
+
+	unsigned int mNumPointLights;
+	std::set<PointLight*> mPointLights;
 
 	struct PerFrameConstants
 	{
@@ -124,9 +132,13 @@ private:
 	bool CreateFullScreenQuad();
 	DirectX11BufferHelper<Vector2> mFullScreenQuadBuffer;
 
+	std::vector<const DirectX11Model*> mModelsToRender;
+
 	void RenderGBuffer();
 	void ComputeLighting();
 	void FinalPass();
+
+	ResourceReference<DirectX11Texture> mSkyboxTexture;
 };
 
 #endif // __DirectX11Renderer3D_h__

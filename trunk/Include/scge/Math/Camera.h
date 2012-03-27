@@ -1,9 +1,11 @@
 #ifndef Camera_h__
 #define Camera_h__
 
-#include "scge\Math\Quaternion.h"
+#include "scge\Math.h"
+
 #include "scge\Math\Vector3.h"
-#include "scge\Math\Matrix4.h"
+
+//-----------------------------------//
 
 class Camera
 {
@@ -34,5 +36,7 @@ private:
 	Vector3 mUp;
 	Vector3 mLook;
 };
+
+//-----------------------------------//
 
 #endif // Camera_h__

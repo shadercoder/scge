@@ -2,6 +2,7 @@
 
 #include "scge\Math\Vector2.h"
 #include "scge\Math\BoundingSphere.h"
+#include "scge\Math\BoundingBox.h"
 
 //-----------------------------------//
 
@@ -22,9 +23,8 @@ Frustum::Frustum(const Frustum& other)
 	, nearPlane(other.nearPlane)
 	, farPlane(other.farPlane)
 	, aspectRatio(other.aspectRatio)
+	, planes(other.planes)
 {
-	for(unsigned int i = 0; i < 6; i++ )
-		planes[i] = other.planes[i];
 }
 
 //-----------------------------------//
@@ -93,9 +93,9 @@ void Frustum::updatePlanes(const Matrix4& matView)
 void Frustum::updateCorners(const Matrix4& matView)
 {
 	Matrix4 matClip = matView * matProjection;
-	Matrix4 matInvClip = matClip.InversedCopy();
+	matClip.Inverse();
 
-	Vector3 cornerPoints[] =
+	const Vector3 cornerPoints[8] =
 	{
 		Vector3(-1,  1,  1), Vector3(1,  1,  1),
 		Vector3(-1, -1,  1), Vector3(1, -1,  1),
@@ -107,8 +107,8 @@ void Frustum::updateCorners(const Matrix4& matView)
 	{
 		const Vector3& corner = cornerPoints[i];
 
-		Vector4 c = matInvClip * Vector4(corner, 1);
-		corners[i++] = Vector3(c.x / c.w, c.y / c.w, c.z / c.w);
+		Vector4 c = matClip * Vector4(corner, 1);
+		corners[i] = Vector3(c.x / c.w, c.y / c.w, c.z / c.w);
 	}
 }
 
@@ -118,14 +118,14 @@ IntersectionType Frustum::intersects(const BoundingBox& box) const
 {
 	unsigned int iTotalIn = 0;
 
-	for(unsigned int p = 0; p < 6; ++p)
+	for(const Plane & plane : planes)
 	{
 		unsigned int iInCount = 8;
 		unsigned int iPtIn = 1;
 
-		for(unsigned int i = 0; i < 8; ++i)
+		for(const Vector3 &corner : corners)
 		{
-			if(planes[p].intersects(corners[i]) == IntersectionType::NegativeSide)
+			if(plane.intersects(corner) == IntersectionType::NegativeSide)
 			{
 				iPtIn = 0;
 				--iInCount;

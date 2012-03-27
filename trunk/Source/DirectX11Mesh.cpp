@@ -58,7 +58,7 @@ bool DirectX11Mesh::Load(std::ifstream &file)
 
 bool DirectX11Mesh::Finalise()
 {
-	mMaterial = mResourceManager.getResourceReference<MaterialResource>(mMaterialName);
+	mMaterial = mResourceManager.getResourceReference<DirectX11MaterialResource>(mMaterialName);
 
 	if(!mMaterial) return true;
 	mMaterialName.clear();
@@ -89,8 +89,11 @@ void DirectX11Mesh::Release()
 	mMaterial.Reset();
 }
 
-void DirectX11Mesh::Render(ID3D11DeviceContext* deviceContext) const
+void DirectX11Mesh::Render(ID3D11DeviceContext* deviceContext, bool alphaTestPass) const
 {
+	if(mMaterial->isAlphaTestMaterial() != alphaTestPass)
+		return;
+
 	const static unsigned int stride = sizeof(VertexType);
 	const static unsigned int offset = 0;
 
@@ -99,9 +102,9 @@ void DirectX11Mesh::Render(ID3D11DeviceContext* deviceContext) const
 
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	ResourceReference<DirectX11Texture> diffuse = mMaterial->getDiffuseReference();
-	ResourceReference<DirectX11Texture> normal = mMaterial->getNormalReference();
-	ResourceReference<DirectX11Texture> specular = mMaterial->getSpecularReference();
+	const ResourceReference<DirectX11Texture> &diffuse = mMaterial->getRawDiffuseReference();
+	const ResourceReference<DirectX11Texture> &normal = mMaterial->getRawNormalReference();
+	const ResourceReference<DirectX11Texture> &specular = mMaterial->getRawSpecularReference();
 
 	ID3D11ShaderResourceView* aRViews[] = { diffuse->GetShaderResourceView(), normal->GetShaderResourceView(), specular->GetShaderResourceView() };
 	deviceContext->PSSetShaderResources(0, 3, aRViews);

@@ -185,7 +185,7 @@ public:
 	void unbindKey(Key key);
 	void unbindAll();
 
-	void registerConsoleEvent(ConsoleEvent &consoleEvent);
+	bool registerConsoleEvent(ConsoleEvent &consoleEvent);
 	void unregisterConsoleEvent(ConsoleEvent &consoleEvent);
 
 private:
@@ -201,8 +201,7 @@ private:
 	std::array<char, static_cast<unsigned int>(Key::Count)> mKeyChangeStates;
 	std::array<bool, static_cast<unsigned int>(Key::Count)> mKeyHoldStates;
 
-	typedef boost::bimap<boost::bimaps::unordered_set_of<std::string>, boost::bimaps::set_of<Key>> KeyNameBiMap;
-	KeyNameBiMap mKeyNameBiMap;
+	boost::bimap<boost::bimaps::unordered_set_of<std::string>, boost::bimaps::set_of<Key>> mKeyNameBiMap;
 
 	typedef boost::bimap<boost::bimaps::unordered_set_of<std::string>, boost::bimaps::set_of<ConsoleEvent*>> EventBiMap;
 	EventBiMap mAllEvents;

@@ -46,7 +46,7 @@ bool DirectX11VertexShader::Load()
 	fileName.assign(file.first.begin(), file.first.end());
 
 	ComPtr<ID3D10Blob> errorMessage;
-	if(FAILED(D3DX11CompileFromFile(fileName.c_str(), mResourceData->mShaderDefines, nullptr, mResourceData->mFunctionName.c_str(), "vs_5_0", shaderFlags, 0, nullptr, &mShaderBuffer, &errorMessage, nullptr)))
+	if(FAILED(D3DX11CompileFromFile(fileName.c_str(), mResourceData->mShaderDefines, nullptr, mResourceData->mFunctionName.c_str(), "vs_5_0", shaderFlags, 0, nullptr, mShaderBuffer.getModifieablePointer(), errorMessage.getModifieablePointer(), nullptr)))
 	{
 		mResourceData->mConsole.threadSafePrintError(StringUtility::format("Failed to Compile Vertex Shader : %, function : %", mResourceData->mFileName, mResourceData->mFunctionName));
 
@@ -71,7 +71,7 @@ bool DirectX11VertexShader::Finalise()
 
 bool DirectX11VertexShader::finaliseLoad()
 {
-	if(FAILED(mResourceData->mD3D11Device->CreateVertexShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mVertexShader)))
+	if(FAILED(mResourceData->mD3D11Device->CreateVertexShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, mVertexShader.getModifieablePointer())))
 	{
 		const auto &error = StringUtility::format("Failed to Create Vertex Shader : %, function : %", mResourceData->mFileName, mResourceData->mFunctionName);
 		if(mResourceData->mMultiThreadLoad)
@@ -121,7 +121,7 @@ bool DirectX11VertexShader::finaliseLoad()
 		return true;
 	}
 
-	if(FAILED(mResourceData->mD3D11Device->CreateInputLayout(elements, numElements, mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), &mVertexLayout)))
+	if(FAILED(mResourceData->mD3D11Device->CreateInputLayout(elements, numElements, mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), mVertexLayout.getModifieablePointer())))
 	{
 		const auto &error = StringUtility::format("Failed to Create Input Layout for Vertex Shader : %, function : %, layout : %", mResourceData->mFileName, mResourceData->mFunctionName, mResourceData->mLayoutName);
 		if(mResourceData->mMultiThreadLoad)

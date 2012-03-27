@@ -13,7 +13,7 @@
 class Window
 {
 public:
-	Window(std::string name, Console& console, ResourceManager& resourceManager, FileSystem &fileSystem, unsigned int defaultWidth = GetDesktopWidth(), unsigned int defaultHeight = GetDesktopHeight(), bool defaultWindowed = true, bool defaultMaximised = true);
+	Window(std::string name, Console& console, InputDevice &inputDevice, ResourceManager& resourceManager, FileSystem &fileSystem, unsigned int defaultWidth = GetDesktopWidth(), unsigned int defaultHeight = GetDesktopHeight(), bool defaultWindowed = true, bool defaultMaximised = true);
 	~Window();
 
 	LRESULT WindowProc(UINT msg, WPARAM wParam, LPARAM lParam);
@@ -43,7 +43,6 @@ public:
 	static unsigned int GetDesktopWidth();
 	static unsigned int GetDesktopHeight();
 
-	InputDevice &GetInputDevice() { return mInputDevice; }
 	GraphicsDevice& GetGraphicsDevice() { return mGraphicsDevice; }
 
 	void setMouseClipping(bool clip) { mMouseClippedDesired.setValue(clip); }
@@ -74,10 +73,10 @@ private:
 	bool mMouseClipped;
 
 	GraphicsDevice mGraphicsDevice;
-	InputDevice mInputDevice;
 
 	ResourceManager& mResourceManager;
 	Console& mConsole;
+	InputDevice &mInputDevice;
 
 	void PumpWindowMessages();
 	void FocusChange(bool active);

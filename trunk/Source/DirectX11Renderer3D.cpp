@@ -1,18 +1,23 @@
 #include "scge\Graphics\DirectX11\DirectX11Renderer3D.h"
 
 #include "scge\..\..\Resources\DirectX11SharedDefines.h"
-#include "scge\Graphics\DirectX11\DirectX11Texture.h"
+#include "scge\Graphics\PointLight.h"
 
 DirectX11Renderer3D::DirectX11Renderer3D(Console &console, ResourceManager &resourceManager)
 	: Renderer3D(console, resourceManager)
 	, mDevice(nullptr)
 	, mDeviceContext(nullptr)
 	, mSwapChain(nullptr)
+	, mNumPointLights(0)
 {
 }
 
 DirectX11Renderer3D::~DirectX11Renderer3D()
 {
+	SCGE_ASSERT_MESSAGE(mPointLights.empty(), "Lifetime of point lights longer then the Renderer3D they are assigned to");
+	auto it = mPointLights.begin(), end = mPointLights.end();
+	while(it != end)
+		(*(it++))->Release();
 }
 
 bool DirectX11Renderer3D::onInitialiseDevice(ID3D11Device *device, ID3D11DeviceContext *deviceContext)
@@ -27,16 +32,16 @@ bool DirectX11Renderer3D::onInitialiseDevice(ID3D11Device *device, ID3D11DeviceC
 	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 	samplerDesc.MaxAnisotropy = 16;
 
-	if(FAILED(mDevice->CreateSamplerState(&samplerDesc, &mDiffuseSampler)))
+	if(FAILED(mDevice->CreateSamplerState(&samplerDesc, mDiffuseSampler.getModifieablePointer())))
 		return true;
 
 	CD3D11_BLEND_DESC blendDesc(D3D11_DEFAULT);
-	if(FAILED(mDevice->CreateBlendState(&blendDesc, &mGeometryBlendState)))
+	if(FAILED(mDevice->CreateBlendState(&blendDesc, mGeometryBlendState.getModifieablePointer())))
 		return true;
 
 	CD3D11_DEPTH_STENCIL_DESC dsDesc(D3D11_DEFAULT);
 	dsDesc.DepthFunc = D3D11_COMPARISON_GREATER_EQUAL;
-	if(FAILED(mDevice->CreateDepthStencilState(&dsDesc, &mDepthState)))
+	if(FAILED(mDevice->CreateDepthStencilState(&dsDesc, mDepthState.getModifieablePointer())))
 		return true;
 
 	if(mPerObjectCB.Initialise(mDevice))
@@ -56,32 +61,6 @@ bool DirectX11Renderer3D::onInitialiseDevice(ID3D11Device *device, ID3D11DeviceC
 	mFinalPassPSColour = mResourceManager.getResourceReference<DirectX11PixelShader>("[PixelShader] DirectX11FinalPass.hlsl PSColour");
 	mFinalPassPSSkybox = mResourceManager.getResourceReference<DirectX11PixelShader>("[PixelShader] DirectX11FinalPass.hlsl PSSkybox");
 
-	mOpaqueModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] Lion.smdf"));
-	mOpaqueModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] Lionbackground.smdf"));
-	mOpaqueModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] VaseRound.smdf"));
-	mOpaqueModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] Ceiling.smdf"));
-	mOpaqueModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] ColumnA.smdf"));
-	mOpaqueModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] ColumnB.smdf"));
-	mOpaqueModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] ColumnC.smdf"));
-	mOpaqueModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] Floor.smdf"));
-	mOpaqueModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] FabricGreen.smdf"));
-	mOpaqueModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] FabricBlue.smdf"));
-	mOpaqueModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] FabricRed.smdf"));
-	mOpaqueModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] CurtainBlue.smdf"));
-	mOpaqueModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] CurtainRed.smdf"));
-	mOpaqueModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] CurtainGreen.smdf"));
-	mOpaqueModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] VaseHanging.smdf"));
-	mOpaqueModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] Vase.smdf"));
-	mOpaqueModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] Bricks.smdf"));
-	mOpaqueModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] Arch.smdf"));
-	mOpaqueModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] Details.smdf"));
-	mOpaqueModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] Roof.smdf"));
-	mOpaqueModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] PlagPole.smdf"));
-
-	mAlphaTestModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] VasePlant.smdf"));
-	mAlphaTestModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] Chain.smdf"));
-	mAlphaTestModels.push_back(mResourceManager.getResourceReference<DirectX11Model>("[Model] Thorn.smdf"));
-
 	return false;
 }
 
@@ -93,13 +72,10 @@ void DirectX11Renderer3D::onReleaseDevice()
 	mGBufferAlphaTestPS.Reset();
 	mGBufferOpaquePS.Reset();
 	mGBufferVS.Reset();
-	mOpaqueModels.clear();
-	mAlphaTestModels.clear();
 
 	mFullScreenQuadBuffer.Release();
 
 	mLightBuffer.Release();
-	mLightProperties.clear();
 
 	mPerObjectCB.Release();
 
@@ -123,11 +99,11 @@ bool DirectX11Renderer3D::onInitialiseSwapChain(IDXGISwapChain *swapChain, bool 
 
 	CD3D11_RASTERIZER_DESC rasterStateDesc(D3D11_DEFAULT);
 	rasterStateDesc.MultisampleEnable = swapChainDesc.SampleDesc.Count > 1;
-	if(FAILED(mDevice->CreateRasterizerState(&rasterStateDesc, &mOpaqueRasterizerState)))
+	if(FAILED(mDevice->CreateRasterizerState(&rasterStateDesc, mOpaqueRasterizerState.getModifieablePointer())))
 		return true;
 
 	rasterStateDesc.CullMode = D3D11_CULL_NONE;
-	if(FAILED(mDevice->CreateRasterizerState(&rasterStateDesc, &mAlphaTestRasterizerState)))
+	if(FAILED(mDevice->CreateRasterizerState(&rasterStateDesc, mAlphaTestRasterizerState.getModifieablePointer())))
 		return true;
 
 	if(CreateRenderTarget(swapChainDesc))
@@ -187,11 +163,11 @@ bool DirectX11Renderer3D::CreateRenderTarget(const DXGI_SWAP_CHAIN_DESC &swapCha
 	if(FAILED(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*) &backBuffer)))
 		return true;
 
-	if(FAILED(mDevice->CreateRenderTargetView(backBuffer, nullptr, &mRenderTargetView)))
+	if(FAILED(mDevice->CreateRenderTargetView(backBuffer, nullptr, mRenderTargetView.getModifieablePointer())))
 		return true;
 
 	CD3D11_SHADER_RESOURCE_VIEW_DESC DescSRV(D3D11_SRV_DIMENSION_TEXTURE2DMS, swapChainDesc.BufferDesc.Format);
-	if(FAILED(mDevice->CreateShaderResourceView(backBuffer, &DescSRV, &mRenderTargetSRV)))
+	if(FAILED(mDevice->CreateShaderResourceView(backBuffer, &DescSRV, mRenderTargetSRV.getModifieablePointer())))
 		return true;
 
 	return false;
@@ -206,7 +182,7 @@ bool DirectX11Renderer3D::CreateDepthBuffer(const DXGI_SWAP_CHAIN_DESC &swapChai
 	mDepthBuffer.GetDepthStencil()->GetDesc(&DSVdesc);
 	DSVdesc.Flags = D3D11_DSV_READ_ONLY_DEPTH;
 
-	if(FAILED(mDevice->CreateDepthStencilView(mDepthBuffer.GetTexture(), &DSVdesc, &mDepthBufferReadOnlyDSV)))
+	if(FAILED(mDevice->CreateDepthStencilView(mDepthBuffer.GetTexture(), &DSVdesc, mDepthBufferReadOnlyDSV.getModifieablePointer())))
 		return true;
 
 	return false;
@@ -256,7 +232,7 @@ void DirectX11Renderer3D::RenderGBuffer()
 {
 	mDeviceContext->ClearDepthStencilView(mDepthBuffer.GetDepthStencil(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 0.0f, 0);
 
-	mDeviceContext->PSSetSamplers(0, 1, mDiffuseSampler);
+	mDeviceContext->PSSetSamplers(0, 1, &mDiffuseSampler);
 	mDeviceContext->OMSetDepthStencilState(mDepthState, 0);
 	mDeviceContext->OMSetRenderTargets(mGBufferRTV.size(), mGBufferRTV.data(), mDepthBuffer.GetDepthStencil());
 	mDeviceContext->OMSetBlendState(mGeometryBlendState, 0, 0xFFFFFFFF);
@@ -271,9 +247,9 @@ void DirectX11Renderer3D::RenderGBuffer()
 			mDeviceContext->RSSetState(mOpaqueRasterizerState);
 			mDeviceContext->PSSetShader(mGBufferOpaquePS->getShader(), nullptr, 0);
 
-			for(auto & model : mOpaqueModels)
+			for(auto model : mModelsToRender)
 			{
-				if(!model.isReady())
+				if(model->getResourceStatus() != ResourceStatus::Ready)
 					continue;
 
 				auto pVSPerObject = mPerObjectCB.MapDiscard(mDeviceContext);
@@ -286,7 +262,7 @@ void DirectX11Renderer3D::RenderGBuffer()
 				mDeviceContext->VSSetConstantBuffers(0, 1, mPerObjectCB.GetBufferPointer());
 				mDeviceContext->PSSetConstantBuffers(0, 1, mPerObjectCB.GetBufferPointer());
 
-				model->Render(mDeviceContext);
+				model->Render(mDeviceContext, false);
 			}
 		}
 
@@ -295,9 +271,9 @@ void DirectX11Renderer3D::RenderGBuffer()
 			mDeviceContext->RSSetState(mAlphaTestRasterizerState);
 			mDeviceContext->PSSetShader(mGBufferAlphaTestPS->getShader(), nullptr, 0);
 
-			for(auto & model : mAlphaTestModels)
+			for(auto model : mModelsToRender)
 			{
-				if(!model.isReady())
+				if(model->getResourceStatus() != ResourceStatus::Ready)
 					continue;
 
 				auto pVSPerObject = mPerObjectCB.MapDiscard(mDeviceContext);
@@ -310,13 +286,15 @@ void DirectX11Renderer3D::RenderGBuffer()
 				mDeviceContext->VSSetConstantBuffers(0, 1, mPerObjectCB.GetBufferPointer());
 				mDeviceContext->PSSetConstantBuffers(0, 1, mPerObjectCB.GetBufferPointer());
 
-				model->Render(mDeviceContext);
+				model->Render(mDeviceContext, true);
 			}
 		}
 	}
 
 	ID3D11RenderTargetView *nullViews[] = { nullptr, nullptr };
 	mDeviceContext->OMSetRenderTargets(2, nullViews, nullptr);
+
+	mModelsToRender.clear();
 }
 
 void DirectX11Renderer3D::ComputeLighting()
@@ -332,7 +310,7 @@ void DirectX11Renderer3D::ComputeLighting()
 	constants->mFrameBufferWidth = mWidth;
 	constants->mFrameBufferHeight = mHeight;
 	constants->mEyePosition = mCamera.getPosition();
-	constants->mNumLights = mLightProperties.size();
+	constants->mNumLights = mNumPointLights;
 
 	mPerFrameConstants.Unmap(mDeviceContext);
 
@@ -359,7 +337,7 @@ void DirectX11Renderer3D::ComputeLighting()
 
 void DirectX11Renderer3D::FinalPass()
 {
-	mDeviceContext->OMSetRenderTargets(1, mRenderTargetView, nullptr);
+	mDeviceContext->OMSetRenderTargets(1, &mRenderTargetView, nullptr);
 
 	mDeviceContext->PSSetConstantBuffers(0, 1, mPerFrameConstants.GetBufferPointer());
 
@@ -377,10 +355,9 @@ void DirectX11Renderer3D::FinalPass()
 		mDeviceContext->IASetInputLayout(mFinalPassVS->getInputLayout());
 		mDeviceContext->VSSetShader(mFinalPassVS->getShader(), nullptr, 0);
 
-		ResourceReference<DirectX11Texture> skybox = mSkyboxTexture;
-		if(skybox.isReady())
+		if(mSkyboxTexture.isReady())
 		{
-			mDeviceContext->PSSetShaderResources(2, 1, skybox->GetShaderResourceViewPointer());
+			mDeviceContext->PSSetShaderResources(2, 1, mSkyboxTexture->GetShaderResourceViewPointer());
 
 			if(mFinalPassPSSkybox.isReady())
 			{
@@ -406,65 +383,7 @@ void DirectX11Renderer3D::FinalPass()
 
 bool DirectX11Renderer3D::CreateLightBuffer()
 {
-	Vector3 colours[10];
-	colours[0] = Vector3(1.0f, 1.0f, 1.0f);
-	colours[1] = Vector3(1.0f, 1.0f, 0.0f);
-	colours[2] = Vector3(1.0f, 0.0f, 1.0f);
-	colours[3] = Vector3(0.0f, 1.0f, 1.0f);
-	colours[4] = Vector3(1.0f, 0.0f, 0.0f);
-	colours[5] = Vector3(0.0f, 0.0f, 1.0f);
-	colours[6] = Vector3(0.0f, 1.0f, 0.0f);
-	colours[7] = Vector3(0.0f, 0.5f, 0.5f);
-	colours[8] = Vector3(0.5f, 0.0f, 0.5f);
-	colours[9] = Vector3(0.0f, 0.5f, 0.0f);
-
-	const int n = 24;
-	for(int i = 0; i < n; ++i)
-	{
-		{
-			PointLight light;
-
-			light.mColour = colours[i % 10];
-			light.mAttenuationEnd = 540.0f;
-			light.mAttenuationBegin = 0.3f * light.mAttenuationEnd;
-
-			auto rotation = i * 2 * Math::Constants::Pi;
-			light.mPositionView = Vector3(Math::Sin(rotation / n) * 1200.0f, 240.0f, Math::Cos(rotation / n) * 1200.0f);
-
-			mLightProperties.push_back(light);
-		}
-
-		{
-			PointLight light;
-
-			light.mColour = colours[(i + (n / 2)) % 10];
-			light.mAttenuationEnd = 320.0f;
-			light.mAttenuationBegin = 0.3f * light.mAttenuationEnd;
-
-			auto rotation = i * 2 * Math::Constants::Pi;
-			light.mPositionView = Vector3(Math::Sin(rotation / n) * 400.0f, 180.0f, Math::Cos(rotation / n) * 400.0f);
-
-			mLightProperties.push_back(light);
-		}
-	}
-
-	mLightProperties.resize(3);
-	mLightProperties[0].mAttenuationEnd = 2000.0f;
-	mLightProperties[0].mAttenuationBegin = 0.3f * mLightProperties[0].mAttenuationEnd;
-	mLightProperties[0].mColour = Vector3(0.9f, 0.9f, 0.9f);
-	mLightProperties[0].mPositionView = Vector3(1000.0f, 60.0f, 0.0f);
-
-	mLightProperties[1].mAttenuationEnd = 2000.0f;
-	mLightProperties[1].mAttenuationBegin = 0.3f * mLightProperties[1].mAttenuationEnd;
-	mLightProperties[1].mColour = Vector3(0.9f, 0.8f, 0.8f);
-	mLightProperties[1].mPositionView = Vector3(-800.0f, 120.0f, 0.0f);
-
-	mLightProperties[2].mAttenuationEnd = 6000.0f;
-	mLightProperties[2].mAttenuationBegin = 0.3f * mLightProperties[2].mAttenuationEnd;
-	mLightProperties[2].mColour = Vector3(0.9f, 0.9f, 0.9f);
-	mLightProperties[2].mPositionView = Vector3(0.0f, 4020.0f, 0.0f);
-
-	if(mLightBuffer.Initialise(mDevice, mLightProperties.size(), D3D11_BIND_SHADER_RESOURCE, true, nullptr, true))
+	if(mLightBuffer.Initialise(mDevice, MAX_LIGHTS, D3D11_BIND_SHADER_RESOURCE, true, nullptr, true))
 		return true;
 
 	return false;
@@ -474,12 +393,15 @@ void DirectX11Renderer3D::SetupLights()
 {
 	auto lights = mLightBuffer.MapDiscard(mDeviceContext);
 
-	for(unsigned int i = 0; i < mLightProperties.size(); ++i)
+	mNumPointLights = 0;
+	for(const PointLight *pointLight : mPointLights)
 	{
-		lights[i].mAttenuationEnd = mLightProperties[i].mAttenuationEnd;
-		lights[i].mAttenuationBegin = mLightProperties[i].mAttenuationBegin;
-		lights[i].mColour = mLightProperties[i].mColour;
-		lights[i].mPositionView = mLightProperties[i].mPositionView * mView;
+		SCGE_ASSERT(mNumPointLights < MAX_LIGHTS);
+		lights[mNumPointLights].mPositionView = pointLight->getPosition() * mView;
+		lights[mNumPointLights].mColour = pointLight->getColour();
+		lights[mNumPointLights].mAttenuationBegin = pointLight->getAttenuationBegin();
+		lights[mNumPointLights].mAttenuationEnd = pointLight->getAttenuationEnd();
+		++mNumPointLights;
 	}
 
 	mLightBuffer.Unmap(mDeviceContext);
@@ -497,4 +419,19 @@ bool DirectX11Renderer3D::CreateFullScreenQuad()
 		return true;
 
 	return false;
+}
+
+void DirectX11Renderer3D::registerPointLight(PointLight &pointLight)
+{
+	mPointLights.insert(&pointLight);
+}
+
+void DirectX11Renderer3D::unRegisterPointLight(PointLight &pointLight)
+{
+	mPointLights.erase(&pointLight);
+}
+
+void DirectX11Renderer3D::addModelToQueue(const DirectX11Model* model)
+{
+	mModelsToRender.push_back(model);
 }

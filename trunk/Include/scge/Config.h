@@ -2,25 +2,25 @@
 #define Config_h__
 
 #if defined(_WIN32) || defined(__WIN32__)
-	#define SCGE_SYSTEM_WINDOWS
-	#ifndef WIN32_LEAN_AND_MEAN
-		#define WIN32_LEAN_AND_MEAN
-	#endif
-	#ifndef NOMINMAX
-		#define NOMINMAX
-	#endif
+#	define SCGE_SYSTEM_WINDOWS
+#	ifndef WIN32_LEAN_AND_MEAN
+#		define WIN32_LEAN_AND_MEAN
+#	endif
+#	ifndef NOMINMAX
+#		define NOMINMAX
+#	endif
 #elif defined(linux) || defined(__linux)
-	#define SCGE_SYSTEM_LINUX
+#	define SCGE_SYSTEM_LINUX
 #elif defined(__APPLE__) || defined(MACOSX) || defined(macintosh) || defined(Macintosh)
-	#define SCGE_SYSTEM_MACOS
+#	define SCGE_SYSTEM_MACOS
 #elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
-	#define SCGE_SYSTEM_FREEBSD
+#	define SCGE_SYSTEM_FREEBSD
 #else
-	#error This operating system is not supported by scge
+#	error This operating system is not supported by scge
 #endif
 
 #if !defined(NDEBUG)
-	#define SCGE_DEBUG
+#	define SCGE_DEBUG
 #endif
 
 #include <climits>

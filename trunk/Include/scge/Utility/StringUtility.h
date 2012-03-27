@@ -68,6 +68,7 @@ namespace StringUtility
 		return variable;
 	}
 
+static_assert(_MSC_VER == 1700, "Enable this");
 #if defined(SCGE_CPP11)
 	inline void formatRecurse(const char *s, std::ostream &ss)
 	{
@@ -205,17 +206,17 @@ namespace StringUtility
 		std::stringstream currentToken;
 		std::vector<std::string> currentTokens;
 		bool foundComment = false;
-		std::string::value_type groupChar = ' ';
-		for(auto character = text.cbegin(); character != text.cend(); ++character)
+		char groupChar = ' ';
+		for(char character : text)
 		{
 			if(currentToken.str().empty())
 			{
-				if(*character == '#')
+				if(character == '#')
 					break;
 
 				if(foundComment)
 				{
-					if(*character == '\\')
+					if(character == '\\')
 						break;
 					else
 					{
@@ -223,33 +224,33 @@ namespace StringUtility
 						currentToken << '\\';
 					}
 				}
-				else if(*character == '\\')
+				else if(character == '\\')
 				{
 					foundComment = true;
 					continue;
 				}
 			}
 
-			if(*character != ';' || groupChar != ' ')
-				currentSection << *character;
+			if(character != ';' || groupChar != ' ')
+				currentSection << character;
 
-			if((groupChar != ' ' && *character != groupChar) || (*character != '\'' && *character != '"' && *character != ' ' && *character != '=' && *character != ';'))
-				currentToken << *character;
+			if((groupChar != ' ' && character != groupChar) || (character != '\'' && character != '"' && character != ' ' && character != '=' && character != ';'))
+				currentToken << character;
 
 			if(groupChar != ' ')
 			{
-				if(*character != groupChar)
+				if(character != groupChar)
 					continue;
 				else
 					groupChar = ' ';
 			}
-			else if(*character == '"' || *character == '\'')
+			else if(character == '"' || character == '\'')
 			{
-				groupChar = *character;
+				groupChar = character;
 				continue;
 			}
 
-			if(*character == ' ' || *character == '=')
+			if(character == ' ' || character == '=')
 			{
 				if(!currentToken.str().empty())
 				{
@@ -257,7 +258,7 @@ namespace StringUtility
 					currentToken.str("");
 				}
 			}
-			else if(*character == ';')
+			else if(character == ';')
 			{
 				if(!currentToken.str().empty())
 				{

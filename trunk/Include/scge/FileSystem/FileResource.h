@@ -37,7 +37,7 @@ protected:
 		if(mRegisteredForChanges)
 			return true;
 
-		mRegisteredForChanges = mFileResourceData->mFileSystem.RegisterForFileChanges(*this, mFileResourceData->mFileName);
+		mRegisteredForChanges = !mFileResourceData->mFileSystem.RegisterForFileChanges(*this, mFileResourceData->mFileName);
 		return mRegisteredForChanges;
 	}
 

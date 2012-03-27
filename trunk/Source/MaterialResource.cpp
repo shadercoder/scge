@@ -1,11 +1,14 @@
 #include "scge\Graphics\Resources\MaterialResource.h"
 
+#include "scge\Config.h"
+
 #include <algorithm>
 #include <fstream>
 #include <string>
 
-MaterialResourceData::MaterialResourceData(ResourceManager &resourceManager, FileSystem &fileSystem, const std::string &arguments)
+MaterialResourceData::MaterialResourceData(Console &console, ResourceManager &resourceManager, FileSystem &fileSystem, const std::string &arguments)
 	: FileResourceData(fileSystem)
+	, mConsole(console)
 	, mResourceManager(resourceManager)
 {
 	mFileName = arguments;
@@ -16,90 +19,51 @@ std::string MaterialResourceData::getIdentifier() const
 	return mFileName;
 }
 
-std::shared_ptr<Resource> MaterialResourceData::createResource() const
+template <typename T>
+inline bool read(std::ifstream &file, T &result)
 {
-	return std::shared_ptr<Resource>(new MaterialResource(this));
+	file.read((char *)&result, sizeof(T));
+	return file.fail();
 }
 
-bool MaterialResource::Load()
+inline bool read(std::ifstream &file, std::string &result)
 {
-	std::ifstream file = mResourceData->mFileSystem.OpenFileRead(mResourceData->mFileName);
+	uint32 stringLength = 0;
+	if(read(file, stringLength)) return true;
+
+	result.resize(stringLength);
+
+	file.read(&result[0], sizeof(char)*stringLength);
+	return file.fail();
+}
+
+bool MaterialResource::LoadMaterial(const MaterialResourceData &resourceData)
+{
+	std::ifstream file = resourceData.mFileSystem.OpenFileRead(resourceData.mFileName);
 	if(!file || !file.is_open())
 		return true;
 
-	int fileVersion = 0;
-	file >> fileVersion;
-	if(fileVersion != 1)
+	uint8 fileVersion = 0;
+	if(read(file, fileVersion) || fileVersion != 1)
 		return true;
 
-	file >> mDiffuseTextureName;
-	if(mDiffuseTextureName.length() == 0u)
-		mDiffuseTextureName = "[Alias] BlankDiffuse";
+	if(read(file, mDiffuseTextureName))
+		return true;
 
-	file >> mNormalTextureName;
-	if(mNormalTextureName.length() == 0u)
-		mNormalTextureName = "[Alias] BlankNormal";
+	if(read(file, mNormalTextureName))
+		return true;
 
-	file >> mSpecularTextureName;
-	if(mSpecularTextureName.length() == 0u)
-		mSpecularTextureName = "[Alias] BlankSpecular";
+	if(read(file, mSpecularTextureName))
+		return true;
 
-	file >> mMaterialTypeName;
-	if(mMaterialTypeName.length() == 0u)
-		mMaterialTypeName = "Blank";
+	uint8 materialType;
+	if(read(file, materialType))
+		return true;
+
+	mMaterialType = static_cast<MaterialType>(materialType);
+
+	if(read(file, mIsAlphaTestMaterial))
+		return true;
 
 	return false;
-}
-
-bool MaterialResource::Finalise()
-{
-	mDiffuseTexture = mResourceData->mResourceManager.getResourceReference<TextureResource>(mDiffuseTextureName);
-	if(!mDiffuseTexture)
-		return true;
-	mDiffuseTextureName.clear();
-
-	mNormalTexture = mResourceData->mResourceManager.getResourceReference<TextureResource>(mNormalTextureName);
-	if(!mNormalTexture)
-		return true;
-	mNormalTextureName.clear();
-
-	mSpecularTexture = mResourceData->mResourceManager.getResourceReference<TextureResource>(mSpecularTextureName);
-	if(!mSpecularTexture)
-		return true;
-	mSpecularTextureName.clear();
-
-	registerForChanges();
-
-	return false;
-}
-
-void MaterialResource::Release()
-{
-	unregisterForChanges();
-
-	mDiffuseTextureName.clear();
-	mDiffuseTexture.Reset();
-
-	mNormalTextureName.clear();
-	mNormalTexture.Reset();
-
-	mSpecularTextureName.clear();
-	mSpecularTexture.Reset();
-
-	mMaterialTypeName.clear();
-}
-
-ResourceStatus MaterialResource::getResourceStatus() const
-{
-	ResourceStatus baseStatus = Resource::getResourceStatus();
-	if(baseStatus != ResourceStatus::Ready)
-		return baseStatus;
-
-	baseStatus = std::min(baseStatus, mDiffuseTexture->getResourceStatus());
-	baseStatus = std::min(baseStatus, mNormalTexture->getResourceStatus());
-	baseStatus = std::min(baseStatus, mSpecularTexture->getResourceStatus());
-
-	if(baseStatus == ResourceStatus::Ready || baseStatus == ResourceStatus::FinaliseError || baseStatus == ResourceStatus::LoadError)
-		return baseStatus;
-	return ResourceStatus::Loading;
 }

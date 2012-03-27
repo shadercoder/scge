@@ -1,6 +1,7 @@
 #include "scge\Console.h"
 
 #include "scge\FileSystem.h"
+#include "scge\Warning.h"
 
 #include <functional>
 #include <fstream>
@@ -51,6 +52,7 @@ Console::~Console()
 	}
 	mAliases.clear();
 
+	SCGE_ASSERT_MESSAGE(mConsoleCommands.empty(), "Lifetime of console command longer then the console");
 	auto it = mConsoleCommands.begin(), end = mConsoleCommands.end();
 	while(it != end)
 	{
@@ -64,7 +66,7 @@ Console::~Console()
 
 void Console::update()
 {
-	boost::mutex::scoped_lock lock(mQueuedCommandsMutex);
+	std::unique_lock<std::mutex> lock(mQueuedCommandsMutex);
 
 	while(!mQueuedCommands.empty())
 	{
@@ -237,14 +239,14 @@ std::vector<std::string> Console::getSuggestions(const std::string &text, unsign
 
 void Console::threadSafePrint(std::string text)
 {
-	boost::mutex::scoped_lock lock(mQueuedCommandsMutex);
+	std::unique_lock<std::mutex> lock(mQueuedCommandsMutex);
 
 	mQueuedCommands.push(std::make_tuple(true, std::move(text), false, false));
 }
 
 void Console::threadSafeExecute(std::string text, bool silent, bool canStoreCommand)
 {
-	boost::mutex::scoped_lock lock(mQueuedCommandsMutex);
+	std::unique_lock<std::mutex> lock(mQueuedCommandsMutex);
 
 	mQueuedCommands.push(std::make_tuple(false, std::move(text), silent, canStoreCommand));
 }

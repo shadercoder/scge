@@ -56,7 +56,7 @@ bool AudioDevice::Initialise()
 		if(CheckError(mSystem->setSpeakerMode(speakerMode)))
 			return true;
 
-		if(caps & FMOD_CAPS_HARDWARE_EMULATED && CheckError(mSystem->setDSPBufferSize(1024, 10)))
+		if((caps & FMOD_CAPS_HARDWARE_EMULATED) && CheckError(mSystem->setDSPBufferSize(1024, 10)))
 			return true;
 
 		char name[256];
@@ -83,6 +83,10 @@ bool AudioDevice::Initialise()
 		return true;
 
 	if(CheckError(mSystem->set3DSettings(1.0f, 1.0f, 1.0f)))
+		return true;
+
+	FMOD_REVERB_PROPERTIES prop = FMOD_PRESET_BATHROOM;
+	if(CheckError(mSystem->getReverbProperties(&prop)))
 		return true;
 
 	if(CheckError(mSystem->createSoundGroup("MasterGroup", &mMasterSoundGroup)))

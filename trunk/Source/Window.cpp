@@ -34,7 +34,7 @@ LRESULT CALLBACK StaticWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
-Window::Window(std::string name, Console& console, ResourceManager& resourceManager, FileSystem &fileSystem, unsigned int defaultWidth, unsigned int defaultHeight, bool defaultWindowed, bool defaultMaximised)
+Window::Window(std::string name, Console& console, InputDevice &inputDevice, ResourceManager& resourceManager, FileSystem &fileSystem, unsigned int defaultWidth, unsigned int defaultHeight, bool defaultWindowed, bool defaultMaximised)
 	: mWidth(console, "Window.Width", "Width of the Game Window", 640, GetDesktopWidth(), defaultWidth)
 	, mHeight(console, "Window.Height", "Height of the Game Window", 480, GetDesktopHeight(), defaultHeight)
 	, mWindowed(console, "Window.Windowed", "Whether the window fill the screen or not", defaultWindowed)
@@ -51,7 +51,7 @@ Window::Window(std::string name, Console& console, ResourceManager& resourceMana
 	, mHideMouse(false)
 	, mMouseClipped(false)
 	, mResourceManager(resourceManager)
-	, mInputDevice(console)
+	, mInputDevice(inputDevice)
 	, mConsole(console)
 	, mGraphicsDevice(console, resourceManager, fileSystem)
 {
