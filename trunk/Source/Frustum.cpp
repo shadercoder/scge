@@ -139,7 +139,7 @@ IntersectionType Frustum::intersects(const BoundingBox& box) const
 	}
 
 	if(iTotalIn == 6)
-		IntersectionType::Inside;
+		return IntersectionType::Inside;
 
 	return IntersectionType::Intersects;
 }

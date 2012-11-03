@@ -68,7 +68,9 @@ namespace StringUtility
 		return variable;
 	}
 
+#if defined(_MSC_VER)
 static_assert(_MSC_VER == 1700, "Enable this");
+#endif
 #if defined(SCGE_CPP11)
 	inline void formatRecurse(const char *s, std::ostream &ss)
 	{

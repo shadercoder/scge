@@ -3,9 +3,9 @@
 #include "scge\Console.h"
 
 ConsoleCommand::ConsoleCommand(std::string name, std::string comment)
-	: mName(std::move(name))
+	: mConsole(nullptr)
+	, mName(std::move(name))
 	, mComment(std::move(comment))
-	, mConsole(nullptr)
 {
 }
 

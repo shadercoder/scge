@@ -23,14 +23,10 @@ DirectX11FontData::DirectX11FontData(ID3D11Device *d3d11Device, FileSystem &file
 	{
 		switch(arguments.size())
 		{
-		case 4:
-			mFontSize = StringUtility::toVariable<float>(arguments[3]);
-		case 3:
-			mFontStyle = StringUtility::toVariable<int>(arguments[2]);
-		case 2:
-			mAA = StringUtility::toVariable<bool>(arguments[1]);
-		case 1:
-			mFileName = arguments[0];
+		case 4: mFontSize = StringUtility::toVariable<float>(arguments[3]);
+		case 3: mFontStyle = StringUtility::toVariable<int>(arguments[2]);
+		case 2: mAA = StringUtility::toVariable<bool>(arguments[1]);
+		case 1: mFileName = arguments[0];
 		}
 	});
 }

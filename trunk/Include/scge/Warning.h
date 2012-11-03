@@ -28,9 +28,15 @@ namespace Warning
 
 //-----------------------------------//
 
+#if defined(_MSC_VER)
+#	define SCGE_DEBUG_BREAK __debugbreak()
+#else
+#	define SCGE_DEBUG_BREAK exit(-1)
+#endif
+
 #if defined(SCGE_DEBUG)
-#	define SCGE_ASSERT(x) do { if(!(x)) { Warning::Result result = Warning::displayBox(StringUtility::format("(%) Failed!\nIn function % at line % in file %", #x, __FUNCTION__, __LINE__, __FILE__), Warning::Type::Assertion); if(result == Warning::Result::Debug) __debugbreak(); else if(result == Warning::Result::Exit) exit(-1); } } while(false)
-#	define SCGE_ASSERT_MESSAGE(x, y) do { if(!(x)) { Warning::Result result = Warning::displayBox(StringUtility::format("(%) Failed!\n%\nIn function % at line % in file %", #x, y, __FUNCTION__, __LINE__, __FILE__), Warning::Type::Assertion); if(result == Warning::Result::Debug) __debugbreak(); else if(result == Warning::Result::Exit) exit(-1); } } while(false)
+#	define SCGE_ASSERT(x) do { if(!(x)) { Warning::Result result = Warning::displayBox(StringUtility::format("(%) Failed!\nIn function % at line % in file %", #x, __FUNCTION__, __LINE__, __FILE__), Warning::Type::Assertion); if(result == Warning::Result::Debug) SCGE_DEBUG_BREAK; else if(result == Warning::Result::Exit) exit(-1); } } while(false)
+#	define SCGE_ASSERT_MESSAGE(x, y) do { if(!(x)) { Warning::Result result = Warning::displayBox(StringUtility::format("(%) Failed!\n%\nIn function % at line % in file %", #x, y, __FUNCTION__, __LINE__, __FILE__), Warning::Type::Assertion); if(result == Warning::Result::Debug) SCGE_DEBUG_BREAK; else if(result == Warning::Result::Exit) exit(-1); } } while(false)
 #	define SCGE_ERROR(x) do { Warning::Result result = Warning::displayBox(StringUtility::format("%\nIn function % at line % in file %", x, __FUNCTION__, __LINE__, __FILE__), Warning::Type::Error); if(result == Warning::Result::Debug) __debugbreak(); else if(result == Warning::Result::Exit) exit(-1); } while(false)
 #else
 #	define SCGE_ASSERT(x) 
