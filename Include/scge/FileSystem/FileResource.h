@@ -11,9 +11,9 @@ public:
 
 	virtual std::string getIdentifier() const override { return mFileName; }
 
-	std::string mFileName;
-
 	FileSystem &mFileSystem;
+
+	std::string mFileName;
 };
 
 class FileResource : public Resource
@@ -49,9 +49,9 @@ protected:
 	}
 
 private:
-	bool mRegisteredForChanges;
-
 	const FileResourceData *mFileResourceData;
+
+	bool mRegisteredForChanges;
 };
 
 #endif // __FileResource_h__

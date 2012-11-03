@@ -2,6 +2,7 @@
 #define __ConsoleVariable_h__
 
 #include "scge\Console\ConsoleCommand.h"
+#include "scge\Console.h"
 #include "scge\Utility.h"
 
 #include <functional>
@@ -266,8 +267,9 @@ public:
 		mNewValue = defaultValue;
 		mDefaultValue = defaultValue;
 
-		return ConsoleCommand::initialise(console);
+		bool initialised =  ConsoleCommand::initialise(console);
 		updateValue();
+		return initialised;
 	}
 
 	bool initialise(Console &console, const VariableType &minValue, const VariableType &maxValue, const VariableType &defaultValue)
@@ -281,8 +283,9 @@ public:
 		mMinMax.setMinMaxValue(minValue, maxValue);
 		clampValues();
 
-		return ConsoleCommand::initialise(console);
+		bool initialised = ConsoleCommand::initialise(console);
 		updateValue();
+		return initialised;
 	}
 
 	bool initialise(Console &console, const VariableType &defaultValue, std::function<void()> onChange)
@@ -295,8 +298,9 @@ public:
 		mDefaultValue = defaultValue;
 		mOnChange.setOnChange(onChange);
 
-		return ConsoleCommand::initialise(console);
+		bool initialised =  ConsoleCommand::initialise(console);
 		updateValue();
+		return initialised;
 	}
 
 	bool initialise(Console &console, const VariableType &minValue, const VariableType &maxValue, const VariableType &defaultValue, std::function<void()> onChange)
@@ -311,8 +315,9 @@ public:
 		clampValues();
 		mOnChange.setOnChange(onChange);
 
-		return ConsoleCommand::initialise(console);
+		bool initialised =  ConsoleCommand::initialise(console);
 		updateValue();
+		return initialised;
 	}
 
 private:

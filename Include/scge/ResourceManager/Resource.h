@@ -57,6 +57,8 @@ class Resource
 {
 public:
 	Resource(const ResourceData *) : mResourceStatus(ResourceStatus::Unloaded), mReferences(0) {}
+	Resource(const Resource &) = delete;
+	Resource &operator=(const Resource &) = delete;
 	virtual ~Resource() {}
 
 	virtual bool Load() = 0;
@@ -77,9 +79,6 @@ public:
 	typedef ResourceInterface<Resource> Interface;
 
 private:
-	Resource(const Resource &);
-	Resource &operator=(const Resource &);
-
 	ResourceStatus mResourceStatus;
 
 	std::atomic<unsigned int> mReferences;

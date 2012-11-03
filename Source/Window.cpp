@@ -1,4 +1,4 @@
-#include <scge\Window.h>
+#include "scge\Window.h"
 
 static unsigned int gExtraHeight = GetSystemMetrics(SM_CXFRAME)*2 + GetSystemMetrics(SM_CYCAPTION);
 static unsigned int gExtraWidth = GetSystemMetrics(SM_CYFRAME)*2;

@@ -29,7 +29,6 @@ float Math::Interpolate::cosine(float a, float b, float t)
 
 //-----------------------------------//
 
-static_assert(_MSC_VER == 1700, "Change to thread_local");
 static std::mt19937 randomEngine;
 
 void Math::seedRandom(unsigned long seedValue)

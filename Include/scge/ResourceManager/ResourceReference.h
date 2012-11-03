@@ -45,7 +45,7 @@ public:
 
 		RemoveReference();
 		mResource = std::dynamic_pointer_cast<T>(other.mResource);
-		mInterface = typename T::Interface<T>(mResource.get());
+		mInterface = typename T::template Interface<T>(mResource.get());
 		AddReference();
 
 		return *this;
@@ -76,17 +76,19 @@ public:
 	}
 
 	bool isReady() const { return mResource && mResource->getResourceStatus() == ResourceStatus::Ready; }
+#if defined(_MSC_VER)
 	static_assert(_MSC_VER == 1700, "Change to explicit operator bool()");
+#endif
 	operator bool() const { return mResource != nullptr; }
-	typename T::Interface<T> *operator->() { return &mInterface; }
-	const typename T::Interface<T> *operator->() const { return &mInterface; }
+	typename T::template Interface<T> *operator->() { return &mInterface; }
+	const typename T::template Interface<T> *operator->() const { return &mInterface; }
 
 	template <typename O>
 	friend class ResourceReference;
 
 private:
 	std::shared_ptr<T> mResource;
-	typename T::Interface<T> mInterface;
+	typename T::template Interface<T> mInterface;
 
 	inline void AddReference()
 	{
