@@ -40,7 +40,7 @@ public:
 	virtual std::string getIdentifier() const;
 	virtual std::string getFactory() const { return "Font"; }
 
-	virtual std::shared_ptr<Resource> createResource() const;
+	virtual std::unique_ptr<Resource> createResource() const;
 
 	ID3D11Device *mD3D11Device;
 

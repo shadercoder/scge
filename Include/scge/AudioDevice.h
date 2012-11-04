@@ -1,7 +1,7 @@
 #ifndef AudioDevice_h__
 #define AudioDevice_h__
 
-#include "scge\Console.h"
+/*#include "scge\Console.h"
 #include "scge\ResourceManager\ResourceFactory.h"
 #include "scge\AudioDevice\SoundResource.h"
 #include "scge\Math\Camera.h"
@@ -42,6 +42,6 @@ private:
 
 	AudioDevice(const AudioDevice &other);
 	AudioDevice &operator=(const AudioDevice &other);
-};
+};*/
 
 #endif // AudioDevice_h__

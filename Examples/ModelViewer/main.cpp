@@ -1,6 +1,5 @@
 #include <scge\Console.h>
 #include <scge\Window.h>
-#include <scge\AudioDevice.h>
 #include <scge\InputDevice.h>
 #include <scge\FileSystem.h>
 #include <scge\Timer.h>
@@ -23,9 +22,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Console console(fileSystem, false);
 	
 	ResourceManager resourceManager(console);
-
-	AudioDevice audio(console, resourceManager, fileSystem);
-	if(audio.Initialise()) return 0;
 
 	InputDevice input(console);
 
@@ -62,13 +58,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	std::vector<ResourceReference<ModelResource>> models;
 #define add_model(x) models.push_back(resourceManager.getResourceReference<ModelResource>("[Model] " x ".smdf"))
-	/*add_model("Lion"); add_model("Lionbackground"); add_model("VaseRound"); add_model("Ceiling");
+	add_model("Lion");
+	
+	/*add_model("Lionbackground"); add_model("VaseRound"); add_model("Ceiling");
 	add_model("ColumnA"); add_model("ColumnB"); add_model("ColumnC"); add_model("Floor"); add_model("FabricGreen");
 	add_model("FabricBlue"); add_model("FabricRed"); add_model("CurtainBlue"); add_model("CurtainRed");
 	add_model("CurtainGreen"); add_model("VaseHanging"); add_model("Vase"); add_model("Bricks");
 	add_model("Arch"); add_model("Details"); add_model("Roof");	add_model("VasePlant");
-	add_model("Chain"); add_model("Thorn");*/
-	add_model("Vase");
+	add_model("Chain"); add_model("Thorn");add_model("Vase");*/
 
 	Timer gameTime;
 
@@ -86,7 +83,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		console.update();
 
 		if(window.Update()) break;
-		if(audio.Update(camera)) break;
 		input.Update();
 
 		if(shouldQuitConsole.isPress()) break;

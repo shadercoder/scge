@@ -16,9 +16,9 @@ DirectX11ModelData::DirectX11ModelData(ID3D11Device *d3d11Device, DirectX11Rende
 	mFileName = arguments;
 }
 
-std::shared_ptr<Resource> DirectX11ModelData::createResource() const
+std::unique_ptr<Resource> DirectX11ModelData::createResource() const
 {
-	return std::shared_ptr<Resource>(new DirectX11Model(this));
+	return std::unique_ptr<Resource>(new DirectX11Model(this));
 }
 
 template <typename T>
@@ -37,7 +37,7 @@ bool DirectX11Model::Load()
 		return true;
 	}
 
-	uint8 fileVersion = 0;
+	uint32 fileVersion = 0;
 	if(read(file, fileVersion) || fileVersion != 1)
 	{
 		mResourceData->mConsole.threadSafePrintError(StringUtility::format("Unsupported file format for %", mResourceData->mFileName));

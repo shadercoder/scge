@@ -23,9 +23,9 @@ std::string DirectX11VertexShaderData::getIdentifier() const
 	return mFileName + " " + mFunctionName;
 }
 
-std::shared_ptr<Resource> DirectX11VertexShaderData::createResource() const
+std::unique_ptr<Resource> DirectX11VertexShaderData::createResource() const
 {
-	return std::shared_ptr<Resource>(new DirectX11VertexShader(this));
+	return std::unique_ptr<Resource>(new DirectX11VertexShader(this));
 }
 
 bool DirectX11VertexShader::Load()

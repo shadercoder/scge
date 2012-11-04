@@ -22,9 +22,9 @@ std::string DirectX11ComputeShaderData::getIdentifier() const
 	return mFileName + " " + mFunctionName;
 }
 
-std::shared_ptr<Resource> DirectX11ComputeShaderData::createResource() const
+std::unique_ptr<Resource> DirectX11ComputeShaderData::createResource() const
 {
-	return std::shared_ptr<Resource>(new DirectX11ComputeShader(this));
+	return std::unique_ptr<Resource>(new DirectX11ComputeShader(this));
 }
 
 bool DirectX11ComputeShader::Load()

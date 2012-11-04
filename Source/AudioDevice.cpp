@@ -1,6 +1,6 @@
 #include "scge\AudioDevice.h"
 
-#include "scge\Utility.h"
+/*#include "scge\Utility.h"
 
 #include <fmod_errors.h>
 
@@ -171,3 +171,4 @@ bool AudioDevice::CheckError(FMOD_RESULT result)
 
 	return false;
 }
+*/

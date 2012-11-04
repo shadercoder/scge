@@ -43,8 +43,18 @@ bool MaterialResource::LoadMaterial(const MaterialResourceData &resourceData)
 	if(!file || !file.is_open())
 		return true;
 
-	uint8 fileVersion = 0;
-	if(read(file, fileVersion) || fileVersion != 1)
+	std::string version;
+	std::getline(file, version);
+	uint32 fileVersion = StringUtility::toVariable<uint32>(version);
+
+	std::getline(file, mDiffuseTextureName);
+	std::getline(file, mNormalTextureName);
+	std::getline(file, mSpecularTextureName);
+
+	mMaterialType = MaterialType::Default;
+	mIsAlphaTestMaterial = false;
+
+	/*if(read(file, fileVersion) || fileVersion != 1)
 		return true;
 
 	if(read(file, mDiffuseTextureName))
@@ -56,14 +66,14 @@ bool MaterialResource::LoadMaterial(const MaterialResourceData &resourceData)
 	if(read(file, mSpecularTextureName))
 		return true;
 
-	uint8 materialType;
+	uint32 materialType;
 	if(read(file, materialType))
 		return true;
 
 	mMaterialType = static_cast<MaterialType>(materialType);
 
 	if(read(file, mIsAlphaTestMaterial))
-		return true;
+		return true;*/
 
 	return false;
 }

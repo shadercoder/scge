@@ -45,9 +45,9 @@ std::string DirectX11FontData::getIdentifier() const
 	return ss.str();
 }
 
-std::shared_ptr<Resource> DirectX11FontData::createResource() const
+std::unique_ptr<Resource> DirectX11FontData::createResource() const
 {
-	return std::shared_ptr<Resource>(new DirectX11Font(this));
+	return std::unique_ptr<Resource>(new DirectX11Font(this));
 }
 
 class GdiPlusUser

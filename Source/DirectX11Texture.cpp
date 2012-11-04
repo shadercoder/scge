@@ -13,9 +13,9 @@ DirectX11TextureData::DirectX11TextureData(ID3D11Device *d3d11Device, Console &c
 	mFileName = arguments;
 }
 
-std::shared_ptr<Resource> DirectX11TextureData::createResource() const
+std::unique_ptr<Resource> DirectX11TextureData::createResource() const
 {
-	return std::shared_ptr<Resource>(new DirectX11Texture(this));
+	return std::unique_ptr<Resource>(new DirectX11Texture(this));
 }
 
 bool DirectX11Texture::Load()
