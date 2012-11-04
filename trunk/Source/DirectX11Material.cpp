@@ -1,8 +1,8 @@
 #include "scge\Graphics\DirectX11\DirectX11Material.h"
 
-std::shared_ptr<Resource> DirectX11MaterialData::createResource() const
+std::unique_ptr<Resource> DirectX11MaterialData::createResource() const
 {
-	return std::shared_ptr<Resource>(new DirectX11MaterialResource(this));
+	return std::unique_ptr<Resource>(new DirectX11MaterialResource(this));
 }
 
 bool DirectX11MaterialResource::Load()

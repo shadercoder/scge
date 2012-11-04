@@ -1,6 +1,6 @@
 #include "scge\AudioDevice\SoundResource.h"
 
-#include "scge\Utility.h"
+/*#include "scge\Utility.h"
 
 SoundResourceData::SoundResourceData(FileSystem &fileSystem, FMOD::System &system, FMOD::SoundGroup &soundGroup, const std::string &arguments)
 	: FileResourceData(fileSystem)
@@ -15,9 +15,9 @@ std::string SoundResourceData::getIdentifier() const
 	return mFileName;
 }
 
-std::shared_ptr<Resource> SoundResourceData::createResource() const
+std::unique_ptr<Resource> SoundResourceData::createResource() const
 {
-	return std::shared_ptr<Resource>(new SoundResource(this));
+	return std::unique_ptr<Resource>(new SoundResource(this));
 }
 
 SoundResource::SoundResource(const SoundResourceData *data)
@@ -53,4 +53,4 @@ void SoundResource::Release()
 		mSound->release();
 		mSound = nullptr;
 	}
-}
+}*/

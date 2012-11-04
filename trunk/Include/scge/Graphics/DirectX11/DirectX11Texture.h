@@ -15,7 +15,7 @@ class DirectX11TextureData : public TextureResourceData
 public:
 	DirectX11TextureData(ID3D11Device *d3d11Device, Console &console, FileSystem &fileSystem, bool multiThreadLoad, const std::string &arguments);
 
-	virtual std::shared_ptr<Resource> createResource() const final;
+	virtual std::unique_ptr<Resource> createResource() const final;
 
 	ID3D11Device *mD3D11Device;
 	Console &mConsole;

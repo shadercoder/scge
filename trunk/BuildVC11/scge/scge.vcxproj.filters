@@ -167,9 +167,6 @@
     <ClInclude Include="..\..\Include\scge\Utility.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\scge\ThreadPool.h">
-      <Filter>System</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Resources\DirectX11SharedDefines.h">
       <Filter>Graphics\DirectX11\Shaders</Filter>
     </ClInclude>
@@ -376,5 +373,10 @@
     <FxCompile Include="..\..\Resources\DirectX11Utility.hlsl">
       <Filter>Graphics\DirectX11\Shaders</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Include\scge\ResourceManager\ResourceManager.inl">
+      <Filter>ResourceManager</Filter>
+    </None>
   </ItemGroup>
 </Project>

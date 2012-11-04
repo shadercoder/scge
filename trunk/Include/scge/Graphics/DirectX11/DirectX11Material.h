@@ -10,7 +10,7 @@ class DirectX11MaterialData : public MaterialResourceData
 public:
 	DirectX11MaterialData(Console &console, ResourceManager &resourceManager, FileSystem &fileSystem, const std::string &arguments) : MaterialResourceData(console, resourceManager, fileSystem, arguments) { }
 
-	virtual std::shared_ptr<Resource> createResource() const final;
+	virtual std::unique_ptr<Resource> createResource() const final;
 };
 
 class DirectX11MaterialResource : public ResourceBase<DirectX11MaterialData, MaterialResource>

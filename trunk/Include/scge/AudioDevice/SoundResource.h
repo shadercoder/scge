@@ -1,7 +1,7 @@
 #ifndef SoundResource_h__
 #define SoundResource_h__
 
-#include "scge\FileSystem\FileResource.h"
+/*#include "scge\FileSystem\FileResource.h"
 
 #include "scge\Math\Vector3.h"
 
@@ -15,7 +15,7 @@ public:
 	virtual std::string getIdentifier() const;
 	virtual std::string getFactory() const { return "Sound"; }
 
-	virtual std::shared_ptr<Resource> createResource() const;
+	virtual std::unique_ptr<Resource> createResource() const;
 
 	FMOD::System &mSystem;
 	FMOD::SoundGroup &mSoundGroup;
@@ -112,6 +112,6 @@ public:
 
 private:
 	FMOD::Sound* mSound;
-};
+};*/
 
 #endif // SoundResource_h__

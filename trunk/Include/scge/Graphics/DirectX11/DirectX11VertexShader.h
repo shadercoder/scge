@@ -17,7 +17,7 @@ public:
 	virtual std::string getIdentifier() const final;
 	virtual std::string getFactory() const final { return "VertexShader"; }
 
-	virtual std::shared_ptr<Resource> createResource() const final;
+	virtual std::unique_ptr<Resource> createResource() const final;
 
 	ID3D11Device *mD3D11Device;
 	const D3D10_SHADER_MACRO *mShaderDefines;

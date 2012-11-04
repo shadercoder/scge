@@ -14,9 +14,9 @@ public:
 	{}
 
 	template <typename O>
-	ResourceReference(const std::shared_ptr<O> &resource)
-		: mResource(std::dynamic_pointer_cast<T>(resource))
-		, mInterface(mResource.get())
+	ResourceReference(const std::unique_ptr<O> &resource)
+		: mResource(dynamic_cast<T*>(resource.get()))
+		, mInterface(mResource)
 	{
 		static_assert(std::is_convertible<O, Resource>::value, "ResourceReference can only point to a Resource Type");
 		AddReference();
@@ -24,8 +24,8 @@ public:
 
 	template <typename O>
 	ResourceReference(const ResourceReference<O> &other)
-		: mResource(std::dynamic_pointer_cast<T>(other.mResource))
-		, mInterface(mResource.get())
+		: mResource(dynamic_cast<T*>(other.mResource))
+		, mInterface(mResource)
 	{
 		AddReference();
 	}
@@ -44,8 +44,8 @@ public:
 			return *this;
 
 		RemoveReference();
-		mResource = std::dynamic_pointer_cast<T>(other.mResource);
-		mInterface = typename T::template Interface<T>(mResource.get());
+		mResource = dynamic_cast<T*>(other.mResource);
+		mInterface = typename T::template Interface<T>(mResource);
 		AddReference();
 
 		return *this;
@@ -76,10 +76,7 @@ public:
 	}
 
 	bool isReady() const { return mResource && mResource->getResourceStatus() == ResourceStatus::Ready; }
-#if defined(_MSC_VER)
-	static_assert(_MSC_VER == 1700, "Change to explicit operator bool()");
-#endif
-	operator bool() const { return mResource != nullptr; }
+	explicit operator bool() const { return mResource != nullptr; }
 	typename T::template Interface<T> *operator->() { return &mInterface; }
 	const typename T::template Interface<T> *operator->() const { return &mInterface; }
 
@@ -87,7 +84,7 @@ public:
 	friend class ResourceReference;
 
 private:
-	std::shared_ptr<T> mResource;
+	T *mResource;
 	typename T::template Interface<T> mInterface;
 
 	inline void AddReference()

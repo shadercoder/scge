@@ -17,7 +17,7 @@ class DirectX11ModelData : public ModelResourceData
 public:
 	DirectX11ModelData(ID3D11Device *d3d11Device, DirectX11Renderer3D &directX11Renderer3D, Console &console, ResourceManager &resourceManager, FileSystem &fileSystem, bool multiThreadLoad, const std::string &arguments);
 
-	virtual std::shared_ptr<Resource> createResource() const final;
+	virtual std::unique_ptr<Resource> createResource() const final;
 
 	ID3D11Device *mD3D11Device;
 	DirectX11Renderer3D &mDirectX11Renderer3D;
