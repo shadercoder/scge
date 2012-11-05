@@ -75,7 +75,7 @@ public:
 		return *mPointer;
 	}
 
-	T** getModifieablePointer()
+	T** getModifiablePointer()
 	{
 		SCGE_ASSERT_MESSAGE(mPointer == nullptr, "Returning the raw pointer is unsafe as it may be changed without being released");
 		return &mPointer;
@@ -86,7 +86,7 @@ public:
 		return &mPointer;
 	}
 
-	operator bool() const
+	explicit operator bool() const
 	{
 		return mPointer != nullptr;
 	}

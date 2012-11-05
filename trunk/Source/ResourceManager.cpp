@@ -2,11 +2,12 @@
 
 #include <thread>
 
-ResourceManager::ResourceManager(Console& console)
-	: mConsole(console)
+ResourceManager::ResourceManager(FileSystem& fileSystem, Console& console)
+	: mFileSystem(fileSystem)
+	, mConsole(console)
 	, mNumberOfThreads(console, "ResourceManager.NumThreads", "Number of threads used for loading resources", 0u, std::max(std::thread::hardware_concurrency(), 1u) - 1u, std::max(std::thread::hardware_concurrency(), 1u) - 1u)
+	, mActiveWorkers(0)
 	, mIsStopping(false)
-	, mIsWaiting(false)
 {
 	resumeLoads();
 }
@@ -58,6 +59,8 @@ void ResourceManager::Update()
 		resumeLoads();
 	}
 
+	mFileSystem.updateChangedFiles(*this);
+
 	while(!mResourcesToFinalise.empty())
 	{
 		std::unique_lock<std::mutex> lock(mLoadMutex);
@@ -73,29 +76,11 @@ void ResourceManager::Update()
 		else
 			resource.setResourceStatus(ResourceStatus::Ready);
 	}
-
-	// TODO: Make all locations push onto queue so this isn't needed, will also make it safer
-	for(auto & indentifierToResource : mIdentifierToResources)
-	{
-		switch(indentifierToResource.second->getResourceStatus())
-		{
-		case ResourceStatus::Unloaded:
-			loadResource(indentifierToResource.second); break;
-		}
-	}
 }
 
-void ResourceManager::waitForLoads()
+bool ResourceManager::isLoading() const
 {
-	mIsWaiting = true;
-	mLoadCondition.notify_all();
-	for(auto &worker : mWorkers)
-		worker.join();
-
-	mIsWaiting = false;
-	mWorkers.reserve(mNumberOfThreads);
-	for(size_t i = 0; i < mNumberOfThreads; ++i)
-		mWorkers.push_back(std::thread(ResourceManagerWorker(*this)));
+	return mActiveWorkers > 0 || !mResourcesToLoad.empty();
 }
 
 void ResourceManager::stopLoads()
@@ -104,6 +89,7 @@ void ResourceManager::stopLoads()
 	mLoadCondition.notify_all();
 	for(auto &worker : mWorkers)
 		worker.join();
+	mWorkers.clear();
 }
 
 void ResourceManager::resumeLoads()
@@ -129,17 +115,27 @@ void ResourceManager::resourceLoadingFunction(Resource &resource)
 	}
 }
 
-void ResourceManager::loadResource(std::unique_ptr<Resource> &resource)
+void ResourceManager::loadResource(Resource &resource)
 {
-	resource->setResourceStatus(ResourceStatus::Loading);
+	resource.setResourceStatus(ResourceStatus::Loading);
 	if(mNumberOfThreads.getValue() == 0u)
-		resourceLoadingFunction(*resource);
+		resourceLoadingFunction(resource);
 	else
 	{
 		std::unique_lock<std::mutex> lock(mLoadMutex);
-		mResourcesToLoad.push(resource.get());
+		mResourcesToLoad.push(&resource);
 		lock.unlock();
 		mLoadCondition.notify_one();
+	}
+}
+
+void ResourceManager::reloadResource(Resource &resource)
+{
+	if(resource.getResourceStatus() != ResourceStatus::Loading)
+	{
+		resource.Release();
+		resource.setResourceStatus(ResourceStatus::Unloaded);
+		loadResource(resource);
 	}
 }
 
@@ -148,16 +144,18 @@ void ResourceManagerWorker::operator()()
 	while(true)
 	{
 		std::unique_lock<std::mutex> lock(mResourceManager.mLoadMutex);
-		while(!mResourceManager.mIsStopping && !mResourceManager.mIsWaiting && mResourceManager.mResourcesToLoad.empty())
+		while(!mResourceManager.mIsStopping && mResourceManager.mResourcesToLoad.empty())
 			mResourceManager.mLoadCondition.wait(lock);
 
-		if(mResourceManager.mIsStopping || mResourceManager.mResourcesToLoad.empty())
+		if(mResourceManager.mIsStopping)
 			return;
 
 		Resource & resource = *mResourceManager.mResourcesToLoad.front();
+		++mResourceManager.mActiveWorkers;
 		mResourceManager.mResourcesToLoad.pop();
 		lock.unlock();
 
 		mResourceManager.resourceLoadingFunction(resource);
+		--mResourceManager.mActiveWorkers;
 	}
 }

@@ -8,27 +8,28 @@
 #include <boost\bimap.hpp>
 #include <boost\bimap\unordered_set_of.hpp>
 
-class Resource;
+class ResourceManager;
+class FileResource;
 class FileSystem
 {
 public:
 	FileSystem(std::string resourceDirectory = "Resources");
 	~FileSystem();
 
-	void Update();
+	void updateChangedFiles(ResourceManager &resourceManager);
 
 	std::pair<std::string, bool> getFilePath(const std::string &fileName, bool canCreate = false) const;
 
 	std::ifstream OpenFileRead(const std::string &fileName, bool binary = false) const;
 	std::ofstream OpenFileWrite(const std::string &fileName, bool canCreate = false, bool append = false, bool binary = false) const;
 
-	bool RegisterForFileChanges(Resource &resource, const std::string &file);
-	void UnregisterForFileChanges(Resource &resource);
+	bool RegisterForFileChanges(FileResource &resource);
+	void UnregisterForFileChanges(FileResource &resource);
 
 private:
 	std::string mResourceDirectory;
 
-	typedef boost::bimap<boost::bimaps::unordered_set_of<std::string>, boost::bimaps::set_of<Resource*>> ResourceFileAssociations;
+	typedef boost::bimap<boost::bimaps::unordered_set_of<std::string>, boost::bimaps::set_of<FileResource*>> ResourceFileAssociations;
 	ResourceFileAssociations mResourceFileAssociations;
 
 	class DirectoryWatcher;

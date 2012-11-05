@@ -45,7 +45,7 @@ bool DirectX11PixelShader::Load()
 	fileName.assign(file.first.begin(), file.first.end());
 
 	ComPtr<ID3D10Blob> errorMessage;
-	if(FAILED(D3DX11CompileFromFile(fileName.c_str(), mResourceData->mShaderDefines, nullptr, mResourceData->mFunctionName.c_str(), "ps_5_0", shaderFlags, 0, nullptr, mShaderBuffer.getModifieablePointer(), errorMessage.getModifieablePointer(), nullptr)))
+	if(FAILED(D3DX11CompileFromFile(fileName.c_str(), mResourceData->mShaderDefines, nullptr, mResourceData->mFunctionName.c_str(), "ps_5_0", shaderFlags, 0, nullptr, mShaderBuffer.getModifiablePointer(), errorMessage.getModifiablePointer(), nullptr)))
 	{
 		mResourceData->mConsole.threadSafePrintError(StringUtility::format("Failed to compile Pixel Shader : %, function : %", mResourceData->mFileName, mResourceData->mFunctionName));
 
@@ -78,7 +78,7 @@ bool DirectX11PixelShader::Finalise()
 
 bool DirectX11PixelShader::finaliseLoad()
 {
-	if(FAILED(mResourceData->mD3D11Device->CreatePixelShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, mPixelShader.getModifieablePointer())))
+	if(FAILED(mResourceData->mD3D11Device->CreatePixelShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, mPixelShader.getModifiablePointer())))
 		return true;
 
 	mShaderBuffer.Release();

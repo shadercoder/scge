@@ -19,8 +19,10 @@ public:
 class FileResource : public Resource
 {
 public:
-	FileResource(const FileResourceData *fileResourceData) : Resource(fileResourceData), mFileResourceData(fileResourceData), mRegisteredForChanges(false) {}
+	FileResource(const FileResourceData *fileResourceData) : Resource(fileResourceData), mFileResourceData(*fileResourceData), mRegisteredForChanges(false) {}
 	virtual ~FileResource() { unregisterForChanges(); }
+
+	const std::string &getFileName() const { return mFileResourceData.mFileName; }
 
 	template <typename I>
 	class Interface : public ResourceInterface<I>
@@ -37,19 +39,19 @@ protected:
 		if(mRegisteredForChanges)
 			return true;
 
-		mRegisteredForChanges = !mFileResourceData->mFileSystem.RegisterForFileChanges(*this, mFileResourceData->mFileName);
+		mRegisteredForChanges = !mFileResourceData.mFileSystem.RegisterForFileChanges(*this);
 		return mRegisteredForChanges;
 	}
 
 	void unregisterForChanges()
 	{
 		if(mRegisteredForChanges)
-			mFileResourceData->mFileSystem.UnregisterForFileChanges(*this);
+			mFileResourceData.mFileSystem.UnregisterForFileChanges(*this);
 		mRegisteredForChanges = false;
 	}
 
 private:
-	const FileResourceData *mFileResourceData;
+	const FileResourceData &mFileResourceData;
 
 	bool mRegisteredForChanges;
 };
