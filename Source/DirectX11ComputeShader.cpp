@@ -45,7 +45,7 @@ bool DirectX11ComputeShader::Load()
 	fileName.assign(file.first.begin(), file.first.end());
 
 	ComPtr<ID3D10Blob> errorMessage;
-	if(FAILED(D3DX11CompileFromFile(fileName.c_str(), mResourceData->mShaderDefines, nullptr, mResourceData->mFunctionName.c_str(), "cs_5_0", shaderFlags, 0, nullptr, mShaderBuffer.getModifieablePointer(), errorMessage.getModifieablePointer(), nullptr)))
+	if(FAILED(D3DX11CompileFromFile(fileName.c_str(), mResourceData->mShaderDefines, nullptr, mResourceData->mFunctionName.c_str(), "cs_5_0", shaderFlags, 0, nullptr, mShaderBuffer.getModifiablePointer(), errorMessage.getModifiablePointer(), nullptr)))
 	{
 		mResourceData->mConsole.threadSafePrintError(StringUtility::format("Failed to compile Compute Shader : %, function : %", mResourceData->mFileName, mResourceData->mFunctionName));
 
@@ -70,7 +70,7 @@ bool DirectX11ComputeShader::Finalise()
 
 bool DirectX11ComputeShader::finaliseLoad()
 {
-	if(FAILED(mResourceData->mD3D11Device->CreateComputeShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, mComputeShader.getModifieablePointer())))
+	if(FAILED(mResourceData->mD3D11Device->CreateComputeShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, mComputeShader.getModifiablePointer())))
 	{
 		const auto &error = StringUtility::format("Failed to Create Compute Shader : %, function : %", mResourceData->mFileName, mResourceData->mFunctionName);
 		if(mResourceData->mMultiThreadLoad)

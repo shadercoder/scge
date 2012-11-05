@@ -32,16 +32,16 @@ bool DirectX11Renderer3D::onInitialiseDevice(ID3D11Device *device, ID3D11DeviceC
 	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 	samplerDesc.MaxAnisotropy = 16;
 
-	if(FAILED(mDevice->CreateSamplerState(&samplerDesc, mDiffuseSampler.getModifieablePointer())))
+	if(FAILED(mDevice->CreateSamplerState(&samplerDesc, mDiffuseSampler.getModifiablePointer())))
 		return true;
 
 	CD3D11_BLEND_DESC blendDesc(D3D11_DEFAULT);
-	if(FAILED(mDevice->CreateBlendState(&blendDesc, mGeometryBlendState.getModifieablePointer())))
+	if(FAILED(mDevice->CreateBlendState(&blendDesc, mGeometryBlendState.getModifiablePointer())))
 		return true;
 
 	CD3D11_DEPTH_STENCIL_DESC dsDesc(D3D11_DEFAULT);
 	dsDesc.DepthFunc = D3D11_COMPARISON_GREATER_EQUAL;
-	if(FAILED(mDevice->CreateDepthStencilState(&dsDesc, mDepthState.getModifieablePointer())))
+	if(FAILED(mDevice->CreateDepthStencilState(&dsDesc, mDepthState.getModifiablePointer())))
 		return true;
 
 	if(mPerObjectCB.Initialise(mDevice))
@@ -99,11 +99,11 @@ bool DirectX11Renderer3D::onInitialiseSwapChain(IDXGISwapChain *swapChain, bool 
 
 	CD3D11_RASTERIZER_DESC rasterStateDesc(D3D11_DEFAULT);
 	rasterStateDesc.MultisampleEnable = swapChainDesc.SampleDesc.Count > 1;
-	if(FAILED(mDevice->CreateRasterizerState(&rasterStateDesc, mOpaqueRasterizerState.getModifieablePointer())))
+	if(FAILED(mDevice->CreateRasterizerState(&rasterStateDesc, mOpaqueRasterizerState.getModifiablePointer())))
 		return true;
 
 	rasterStateDesc.CullMode = D3D11_CULL_NONE;
-	if(FAILED(mDevice->CreateRasterizerState(&rasterStateDesc, mAlphaTestRasterizerState.getModifieablePointer())))
+	if(FAILED(mDevice->CreateRasterizerState(&rasterStateDesc, mAlphaTestRasterizerState.getModifiablePointer())))
 		return true;
 
 	if(CreateRenderTarget(swapChainDesc))
@@ -163,11 +163,11 @@ bool DirectX11Renderer3D::CreateRenderTarget(const DXGI_SWAP_CHAIN_DESC &swapCha
 	if(FAILED(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*) &backBuffer)))
 		return true;
 
-	if(FAILED(mDevice->CreateRenderTargetView(backBuffer, nullptr, mRenderTargetView.getModifieablePointer())))
+	if(FAILED(mDevice->CreateRenderTargetView(backBuffer, nullptr, mRenderTargetView.getModifiablePointer())))
 		return true;
 
 	CD3D11_SHADER_RESOURCE_VIEW_DESC DescSRV(D3D11_SRV_DIMENSION_TEXTURE2DMS, swapChainDesc.BufferDesc.Format);
-	if(FAILED(mDevice->CreateShaderResourceView(backBuffer, &DescSRV, mRenderTargetSRV.getModifieablePointer())))
+	if(FAILED(mDevice->CreateShaderResourceView(backBuffer, &DescSRV, mRenderTargetSRV.getModifiablePointer())))
 		return true;
 
 	return false;
@@ -182,7 +182,7 @@ bool DirectX11Renderer3D::CreateDepthBuffer(const DXGI_SWAP_CHAIN_DESC &swapChai
 	mDepthBuffer.GetDepthStencil()->GetDesc(&DSVdesc);
 	DSVdesc.Flags = D3D11_DSV_READ_ONLY_DEPTH;
 
-	if(FAILED(mDevice->CreateDepthStencilView(mDepthBuffer.GetTexture(), &DSVdesc, mDepthBufferReadOnlyDSV.getModifieablePointer())))
+	if(FAILED(mDevice->CreateDepthStencilView(mDepthBuffer.GetTexture(), &DSVdesc, mDepthBufferReadOnlyDSV.getModifiablePointer())))
 		return true;
 
 	return false;

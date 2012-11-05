@@ -31,7 +31,7 @@ bool DirectX11Depth2DHelper::InternalConstruct(ID3D11Device* d3dDevice, int widt
 {
 	CD3D11_TEXTURE2D_DESC desc(stencil ? DXGI_FORMAT_R32G8X24_TYPELESS : DXGI_FORMAT_R32_TYPELESS, width, height, arraySize, 1, bindFlags, D3D11_USAGE_DEFAULT, 0, sampleCount, sampleQuality);
 
-	if(FAILED(d3dDevice->CreateTexture2D(&desc, 0, mTexture.getModifieablePointer())))
+	if(FAILED(d3dDevice->CreateTexture2D(&desc, 0, mTexture.getModifiablePointer())))
 		return true;
 
 	if(bindFlags & D3D11_BIND_DEPTH_STENCIL)
@@ -40,7 +40,7 @@ bool DirectX11Depth2DHelper::InternalConstruct(ID3D11Device* d3dDevice, int widt
 		for(int i = 0; i < arraySize; ++i)
 		{
 			CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilDesc(dsvDimension, stencil ? DXGI_FORMAT_D32_FLOAT_S8X24_UINT : DXGI_FORMAT_D32_FLOAT, 0, i, 1);
-			if(FAILED(d3dDevice->CreateDepthStencilView(mTexture, &depthStencilDesc, mDepthStencilElements[i].getModifieablePointer())))
+			if(FAILED(d3dDevice->CreateDepthStencilView(mTexture, &depthStencilDesc, mDepthStencilElements[i].getModifiablePointer())))
 				return true;
 		}
 	}
@@ -48,7 +48,7 @@ bool DirectX11Depth2DHelper::InternalConstruct(ID3D11Device* d3dDevice, int widt
 	if(bindFlags & D3D11_BIND_SHADER_RESOURCE)
 	{
 		CD3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceDesc(srvDimension, stencil ? DXGI_FORMAT_R32_FLOAT_X8X24_TYPELESS : DXGI_FORMAT_R32_FLOAT, 0, 1, 0, arraySize);
-		if(FAILED(d3dDevice->CreateShaderResourceView(mTexture, &shaderResourceDesc, mShaderResource.getModifieablePointer())))
+		if(FAILED(d3dDevice->CreateShaderResourceView(mTexture, &shaderResourceDesc, mShaderResource.getModifiablePointer())))
 			return true;
 	}
 

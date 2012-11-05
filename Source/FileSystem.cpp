@@ -1,6 +1,7 @@
 #include "scge\FileSystem.h"
 
-#include "scge\ResourceManager\Resource.h"
+#include "scge\FileSystem\FileResource.h"
+#include "scge\ResourceManager.h"
 
 #include "scge\Config.h"
 #include <windows.h>
@@ -23,7 +24,7 @@ public:
 		memset(&mOverlapped, 0, sizeof(OVERLAPPED));
 		mOverlapped.hEvent = this;
 
-		mThread = std::thread(std::bind(&DirectoryWatcher::watchFile, this, resourceDirectory));
+		mThread = std::thread(&DirectoryWatcher::watchFile, this, resourceDirectory);
 	}
 
 	~DirectoryWatcher()
@@ -87,7 +88,7 @@ public:
 		}
 	}
 
-	void foreachFile(const std::function<void(const std::string &)> function)
+	void foreachChangedFile(const std::function<void(const std::string &)> function)
 	{
 		std::unique_lock<std::mutex> lock(mChangedFilesMutex);
 
@@ -137,19 +138,16 @@ FileSystem::~FileSystem()
 {
 }
 
-void FileSystem::Update()
+void FileSystem::updateChangedFiles(ResourceManager &resourceManager)
 {
-	mDirectoryWatcher->foreachFile([this](const std::string &changedFile)
+	mDirectoryWatcher->foreachChangedFile([this, &resourceManager](const std::string &changedFile)
 	{
 		auto it = mResourceFileAssociations.left.find(changedFile);
 		if(it != mResourceFileAssociations.left.end())
 		{
 			Resource *resource = it->second;
-			if(resource->getResourceStatus() != ResourceStatus::Loading)
-			{
-				resource->Release();
-				resource->setResourceStatus(ResourceStatus::Unloaded);
-			}
+
+			resourceManager.reloadResource(*resource);
 		}
 	});
 }
@@ -204,15 +202,15 @@ std::ofstream FileSystem::OpenFileWrite(const std::string &fileName, bool canCre
 	return std::move(file);
 }
 
-bool FileSystem::RegisterForFileChanges(Resource &resource, const std::string &file)
+bool FileSystem::RegisterForFileChanges(FileResource &resource)
 {
-	if(!mResourceFileAssociations.insert(ResourceFileAssociations::value_type(file, &resource)).second)
+	if(!mResourceFileAssociations.insert(ResourceFileAssociations::value_type(resource.getFileName(), &resource)).second)
 		return true;
 
 	return false;
 }
 
-void FileSystem::UnregisterForFileChanges(Resource &resource)
+void FileSystem::UnregisterForFileChanges(FileResource &resource)
 {
 	mResourceFileAssociations.right.erase(&resource);
 }

@@ -49,7 +49,7 @@ bool DirectX11Texture::Finalise()
 
 bool DirectX11Texture::finaliseLoad()
 {
-	if(FAILED(D3DX11CreateShaderResourceViewFromMemory(mResourceData->mD3D11Device, mLoadingData.data(), mLoadingData.size(), nullptr, nullptr, mTextureSRV.getModifieablePointer(), nullptr)))
+	if(FAILED(D3DX11CreateShaderResourceViewFromMemory(mResourceData->mD3D11Device, mLoadingData.data(), mLoadingData.size(), nullptr, nullptr, mTextureSRV.getModifiablePointer(), nullptr)))
 		return true;
 	mLoadingData.clear();
 

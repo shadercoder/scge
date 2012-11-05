@@ -54,7 +54,7 @@ ResourceReference<T> ResourceManager::getResourceReference(const std::string &re
 	}
 
 	resourceData.release();
-	loadResource(resource);
+	loadResource(*resource);
 
 	auto it = mIdentifierToResources.insert(std::make_pair(recreatedResourceIdentifier, std::move(resource)));
 
@@ -109,8 +109,9 @@ void ResourceManager::releaseResourceIf(P predicate)
 		if(predicate(*it->second))
 		{
 			// If its not loaded, wait for the thread pool so we can safely release it
-			if(it->second->getResourceStatus() == ResourceStatus::Loading)
-				waitForLoads();
+			bool stoppedLoads = it->second->getResourceStatus() == ResourceStatus::Loading;
+			if(stoppedLoads)
+				stopLoads();
 
 			it->second->Release();
 			it->second->setResourceStatus(ResourceStatus::Released);
@@ -119,6 +120,9 @@ void ResourceManager::releaseResourceIf(P predicate)
 				mIdentifierToResources.erase(it++);
 			else
 				++it;
+
+			if(stoppedLoads)
+				resumeLoads();
 		}
 		else
 			++it;

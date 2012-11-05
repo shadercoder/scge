@@ -35,7 +35,7 @@ bool DirectX11Texture2DHelper::InternalConstruct(ID3D11Device* d3dDevice, int wi
 {
 	CD3D11_TEXTURE2D_DESC textureDesc(format, width, height, arraySize, mipLevels, bindFlags, D3D11_USAGE_DEFAULT, 0, sampleCount, sampleQuality, mipLevels != 1 ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0);
 
-	if(FAILED(d3dDevice->CreateTexture2D(&textureDesc, 0, mTexture.getModifieablePointer())))
+	if(FAILED(d3dDevice->CreateTexture2D(&textureDesc, 0, mTexture.getModifiablePointer())))
 		return true;
 
 	mTexture->GetDesc(&textureDesc);
@@ -46,7 +46,7 @@ bool DirectX11Texture2DHelper::InternalConstruct(ID3D11Device* d3dDevice, int wi
 		for(int i = 0; i < arraySize; ++i)
 		{
 			CD3D11_RENDER_TARGET_VIEW_DESC textureRTVDesc(rtvDimension, format, 0, i, 1);
-			if(FAILED(d3dDevice->CreateRenderTargetView(mTexture, &textureRTVDesc, mRenderTargetElements[i].getModifieablePointer())))
+			if(FAILED(d3dDevice->CreateRenderTargetView(mTexture, &textureRTVDesc, mRenderTargetElements[i].getModifiablePointer())))
 				return true;
 		}
 	}
@@ -57,7 +57,7 @@ bool DirectX11Texture2DHelper::InternalConstruct(ID3D11Device* d3dDevice, int wi
 		for(int i = 0; i < arraySize; ++i)
 		{
 			CD3D11_UNORDERED_ACCESS_VIEW_DESC textureUAVDesc(uavDimension, format, 0, i, 1);
-			if(FAILED(d3dDevice->CreateUnorderedAccessView(mTexture, &textureUAVDesc, mUnorderedAccessElements[i].getModifieablePointer())))
+			if(FAILED(d3dDevice->CreateUnorderedAccessView(mTexture, &textureUAVDesc, mUnorderedAccessElements[i].getModifiablePointer())))
 				return true;
 		}
 	}
@@ -65,13 +65,13 @@ bool DirectX11Texture2DHelper::InternalConstruct(ID3D11Device* d3dDevice, int wi
 	if(bindFlags & D3D11_BIND_SHADER_RESOURCE)
 	{
 		CD3D11_SHADER_RESOURCE_VIEW_DESC srvDesc(srvDimension, format, 0, textureDesc.MipLevels, 0, textureDesc.ArraySize);        
-		d3dDevice->CreateShaderResourceView(mTexture, &srvDesc, mShaderResource.getModifieablePointer());
+		d3dDevice->CreateShaderResourceView(mTexture, &srvDesc, mShaderResource.getModifiablePointer());
 
 		mShaderResourceElements.resize(arraySize);
 		for(int i = 0; i < arraySize; ++i)
 		{
 			CD3D11_SHADER_RESOURCE_VIEW_DESC srvElementDesc(srvDimension, format, 0, 1, i, 1);
-			if(FAILED(d3dDevice->CreateShaderResourceView(mTexture, &srvElementDesc, mShaderResourceElements[i].getModifieablePointer())))
+			if(FAILED(d3dDevice->CreateShaderResourceView(mTexture, &srvElementDesc, mShaderResourceElements[i].getModifiablePointer())))
 				return true;
 		}
 	}

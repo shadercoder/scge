@@ -6,6 +6,7 @@
 #include <scge\Warning.h>
 #include <scge\Graphics\PointLight.h>
 #include <scge\Graphics\Base\ModelResource.h>
+#include <scge\Graphics\Resources\MaterialResource.h>
 
 void fillLightsGrid(std::vector<PointLight> &lights, Window &window)
 {
@@ -21,7 +22,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	FileSystem fileSystem("../../Resources");
 	Console console(fileSystem, false);
 	
-	ResourceManager resourceManager(console);
+	ResourceManager resourceManager(fileSystem, console);
 
 	InputDevice input(console);
 
@@ -51,21 +52,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	window.GetGraphicsDevice().getRenderer3D().setSkybox(resourceManager.getResourceReference<TextureResource>("[Texture] Clouds.dds"));
 
 	Camera &camera = window.GetGraphicsDevice().getRenderer3D().getCamera();
-	camera.rotateY(Math::DegreesToRadians(-90));
+	camera.rotateY(Math::DegreesToRadians(90));
 	camera.setPosition(-1100.0f, -170.0f, 0.0f);
 
 	std::vector<PointLight> lights;
 
-	std::vector<ResourceReference<ModelResource>> models;
-#define add_model(x) models.push_back(resourceManager.getResourceReference<ModelResource>("[Model] " x ".smdf"))
-	add_model("Lion");
-	
-	/*add_model("Lionbackground"); add_model("VaseRound"); add_model("Ceiling");
+	ResourceReference<ModelResource> visibleLion = resourceManager.getResourceReference<ModelResource>("[Model] Lion.smdf");
+
+	std::vector<ResourceReference<MaterialResource>> materials;
+#define add_model(x) materials.push_back(resourceManager.getResourceReference<MaterialResource>("[Material] " x ".smtf"))
+	add_model("Lion");add_model("Lionbackground"); add_model("VaseRound"); add_model("Ceiling");
 	add_model("ColumnA"); add_model("ColumnB"); add_model("ColumnC"); add_model("Floor"); add_model("FabricGreen");
 	add_model("FabricBlue"); add_model("FabricRed"); add_model("CurtainBlue"); add_model("CurtainRed");
 	add_model("CurtainGreen"); add_model("VaseHanging"); add_model("Vase"); add_model("Bricks");
 	add_model("Arch"); add_model("Details"); add_model("Roof");	add_model("VasePlant");
-	add_model("Chain"); add_model("Thorn");add_model("Vase");*/
+	add_model("Chain"); add_model("Thorn");add_model("Vase");
 
 	Timer gameTime;
 
@@ -78,7 +79,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		uint64 frameTime = gameTime.getElapsedReset();
 		float frameSeconds = frameTime / 1000.0f;
 
-		fileSystem.Update();
 		resourceManager.Update();
 		console.update();
 
@@ -121,8 +121,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		if(cameraUp.isHeld()) camera.moveY(distance);
 		if(cameraDown.isHeld()) camera.moveY(-distance);
 
-		for(auto & model : models)
-			model->Render();
+		visibleLion->Render();
+
+		if(resourceManager.isLoading())
+		{
+			if(lights.empty())
+				fillLightsGrid(lights, window);
+		}
+		else if(!lights.empty())
+			lights.clear();
 
 		if(input.IsKeyPress(Key::Num1))
 			fillLightsGrid(lights, window);

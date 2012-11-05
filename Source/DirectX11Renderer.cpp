@@ -20,11 +20,11 @@ bool QueryDisplayMode(bool windowed, unsigned int width, unsigned int height, in
 		return true;
 
 	ComPtr<IDXGIAdapter> adapter;
-	if(FAILED(factory->EnumAdapters(0, adapter.getModifieablePointer())))
+	if(FAILED(factory->EnumAdapters(0, adapter.getModifiablePointer())))
 		return true;
 
 	ComPtr<IDXGIOutput> adapterOutput;
-	if(FAILED(adapter->EnumOutputs(0, adapterOutput.getModifieablePointer())))
+	if(FAILED(adapter->EnumOutputs(0, adapterOutput.getModifiablePointer())))
 		return true;
 
 	unsigned int numModes = 0;
@@ -142,7 +142,7 @@ bool DirectX11Renderer::Initialise(WindowHandle windowHandle, bool windowed, uns
 	flags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-	if(FAILED(D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, flags, &featureLevel, 1, D3D11_SDK_VERSION, &swapChainDesc, mSwapChain.getModifieablePointer(), mDevice.getModifieablePointer(), nullptr, mDeviceContext.getModifieablePointer())))
+	if(FAILED(D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, flags, &featureLevel, 1, D3D11_SDK_VERSION, &swapChainDesc, mSwapChain.getModifiablePointer(), mDevice.getModifiablePointer(), nullptr, mDeviceContext.getModifiablePointer())))
 	{
 		mConsole.printError("D3D11CreateDeviceAndSwapChain() failed");
 		return true;
